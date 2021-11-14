@@ -93,14 +93,18 @@ int SignalToRoot(void){
     TFile *target = new TFile("DataSignal.root","RECREATE");
     
     TTree *signaltrain = new TTree("SignalTrain","Signal for training");
-    TTree *signaltest  = new TTree("SignTest" , "Signa for testing");
+    TTree *signaltest  = new TTree("SignalTest" , "Signa for testing");
     
     //Output/interest Variables
     Float_t fourlepsystems; //Train
     Float_t fourlepsystems0; //Test -----------0->Test
-
+    Float_t fourlepsystempts; //Train
+    Float_t fourlepsystempts0; //Test -----------0->Test
+    
     signaltrain->Branch("FourLepSystemMTrain", &fourlepsystems);
     signaltest->Branch("FourLepSystemMTest", &fourlepsystems0);
+    signaltrain->Branch("FourLepSystemptTrain", &fourlepsystempts);
+    signaltest->Branch("FourLepSystemptTest", &fourlepsystempts0);
     
     int counter=0;
 
@@ -302,16 +306,19 @@ int SignalToRoot(void){
                   if(counter==1) //Fill Train Data 33%
                   {
                       fourlepsystems=FourLepSystem_M;
+                      fourlepsystempts=FourLepSystem_pt;
                       signaltrain->Fill();
                   }
                   if(counter==2)
                   {
                       fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
                       signaltest->Fill();
                   }
                   if(counter==3)
                   { 
                       fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
                       signaltest->Fill();
                       counter=0;
                   }

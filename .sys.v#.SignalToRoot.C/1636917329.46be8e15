@@ -1,4 +1,3 @@
-//Gives back a root file with two trees, one with the info of signal for trainig 33%, and the other for testing 66%
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -97,34 +96,24 @@ int SignalToRoot(void){
     schain->SetBranchAddress("jet_n", &jet_ns, &b_jet_ns);
     schain->SetBranchAddress("jet_pt", &jet_pts, &b_jet_pts);
     schain->SetBranchAddress("jet_eta", &jet_etas, &b_jet_etas);
-    schain->SetBranchAddress("mcWeight", &mcWeight, &b_mcWeight);
-    schain->SetBranchAddress("scaleFactor_PILEUP", &scaleFactor_PILEUP, &b_scaleFactor_PILEUP);
-    schain->SetBranchAddress("scaleFactor_ELE", &scaleFactor_ELE, &b_scaleFactor_ELE);
-    schain->SetBranchAddress("scaleFactor_MUON", &scaleFactor_MUON, &b_scaleFactor_MUON);
-    schain->SetBranchAddress("scaleFactor_LepTRIGGER", &scaleFactor_LepTRIGGER, &b_scaleFactor_LepTRIGGER);
 
     
     //output root file for TRAINING
-    TFile *target = new TFile("RootFiles/DataSignal.root","RECREATE");
+    TFile *target = new TFile("DataSignal.root","RECREATE");
     
     TTree *signaltrain = new TTree("SignalTrain","Signal for training");
     TTree *signaltest  = new TTree("SignalTest" , "Signa for testing");
-    
     
     //Output/interest Variables
     Float_t fourlepsystems; //Train
     Float_t fourlepsystems0; //Test -----------0->Test
     Float_t fourlepsystempts; //Train
     Float_t fourlepsystempts0; //Test -----------0->Test
-    Float_t wstrain;
-    Float_t wstest;
     
     signaltrain->Branch("FourLepSystemMTrain", &fourlepsystems);
     signaltest->Branch("FourLepSystemMTest", &fourlepsystems0);
     signaltrain->Branch("FourLepSystemptTrain", &fourlepsystempts);
     signaltest->Branch("FourLepSystemptTest", &fourlepsystempts0);
-    signaltrain->Branch("WeightSignalTrain", &wstrain);
-    signaltest->Branch("WeightSignalTest", &wstest);
     
     int counter=0;
 
@@ -342,21 +331,18 @@ int SignalToRoot(void){
                   {
                       fourlepsystems=FourLepSystem_M;
                       fourlepsystempts=FourLepSystem_pt;
-                      wstrain=weight;
                       signaltrain->Fill();
                   }
                   if(counter==2)
                   {
                       fourlepsystems0=FourLepSystem_M;
                       fourlepsystempts0=FourLepSystem_pt;
-                      wstest=weight;
                       signaltest->Fill();
                   }
                   if(counter==3)
                   { 
                       fourlepsystems0=FourLepSystem_M;
                       fourlepsystempts0=FourLepSystem_pt;
-                      wstest=weight;
                       signaltest->Fill();
                       counter=0;
                   }

@@ -25,7 +25,7 @@ int SignalToRoot(void){
     schain->AddFile(path+"MC/mc_345060.ggH125_ZZ4lep.4lep.root");
     schain->AddFile(path+"MC/mc_341947.ZH125_ZZ4lep.4lep.root");
     schain->AddFile(path+"MC/mc_341964.WH125_ZZ4lep.4lep.root");
-    schain->AddFile(path+"MC/mc_344235.VBFH125_ZZ4lep.4lep.root");
+    //schain->AddFile(path+"MC/mc_344235.VBFH125_ZZ4lep.4lep.root");//Problematic
 
     //Define variables to use in SIGNAL
     
@@ -46,7 +46,11 @@ int SignalToRoot(void){
     UInt_t          jet_ns;
     vector<float>   *jet_pts;
     vector<float>   *jet_etas;
-    
+    Float_t         mcWeight;
+    Float_t         scaleFactor_PILEUP;
+    Float_t         scaleFactor_ELE;
+    Float_t         scaleFactor_MUON;
+    Float_t         scaleFactor_LepTRIGGER;
    
     
  //------------------------------------------------   
@@ -67,6 +71,11 @@ int SignalToRoot(void){
    TBranch        *b_jet_ns;   //!
    TBranch        *b_jet_pts;   //!
    TBranch        *b_jet_etas;
+   TBranch        *b_mcWeight;   //!
+   TBranch        *b_scaleFactor_PILEUP;   //!
+   TBranch        *b_scaleFactor_ELE;   //!
+   TBranch        *b_scaleFactor_MUON;   //!
+   TBranch        *b_scaleFactor_LepTRIGGER;     //!
 //---------------------------------------------------
     
     //Setting branch address for signal and background
@@ -87,26 +96,31 @@ int SignalToRoot(void){
     schain->SetBranchAddress("jet_n", &jet_ns, &b_jet_ns);
     schain->SetBranchAddress("jet_pt", &jet_pts, &b_jet_pts);
     schain->SetBranchAddress("jet_eta", &jet_etas, &b_jet_etas);
+    sChain->SetBranchAddress("mcWeight", &mcWeight, &b_mcWeight);
+    sChain->SetBranchAddress("scaleFactor_PILEUP", &scaleFactor_PILEUP, &b_scaleFactor_PILEUP);
+    sChain->SetBranchAddress("scaleFactor_ELE", &scaleFactor_ELE, &b_scaleFactor_ELE);
+    sChain->SetBranchAddress("scaleFactor_MUON", &scaleFactor_MUON, &b_scaleFactor_MUON);
+    sChain->SetBranchAddress("scaleFactor_LepTRIGGER", &scaleFactor_LepTRIGGER, &b_scaleFactor_LepTRIGGER);
 
     
     //output root file for TRAINING
-    TFile *target = new TFile("DataSignalTrain.root","RECREATE");
+    TFile *target = new TFile("DataSignal.root","RECREATE");
     
-    TTree *signal = new TTree("Signal","Signal from samples");
+    TTree *signaltrain = new TTree("SignalTrain","Signal for training");
+    TTree *signaltest  = new TTree("SignalTest" , "Signa for testing");
     
     //Output/interest Variables
-    Float_t invmassz1mins;
-    Float_t invmassz2mins;
-
-    signal->Branch("InvMassZ1_min", &invmassz1mins);
-    signal->Branch("InvMassZ2_min", &invmassz2mins);
+    Float_t fourlepsystems; //Train
+    Float_t fourlepsystems0; //Test -----------0->Test
+    Float_t fourlepsystempts; //Train
+    Float_t fourlepsystempts0; //Test -----------0->Test
     
-    //output root file for TEST
-    TFile *target1 = new TFile("DataSignalTest.root","RECREATE");
-    TTree *ssignal = new TTree("Signal", "Signal from samples");
+    signaltrain->Branch("FourLepSystemMTrain", &fourlepsystems);
+    signaltest->Branch("FourLepSystemMTest", &fourlepsystems0);
+    signaltrain->Branch("FourLepSystemptTrain", &fourlepsystempts);
+    signaltest->Branch("FourLepSystemptTest", &fourlepsystempts0);
     
-    
-
+    int counter=0;
 
 
 /*{
@@ -127,6 +141,21 @@ int SignalToRoot(void){
         int goodlep_index[Lep_ns];
         int goodlep_n = 0;
         int lep_index =0;
+            
+        
+        Float_t scaleFactor = scaleFactor_ELE*scaleFactor_MUON*scaleFactor_LepTRIGGER*scaleFactor_PILEUP;
+      
+        Float_t m_mcWeight = mcWeight;
+            
+       //This option is only used when a sample from any "single" process is being added
+            /*{
+        TString option = GetOption();
+        if(option.Contains("single")) { m_mcWeight = (mcWeight/TMath::Abs(mcWeight)); } // set to 1 or -1 for single top MCs
+      }*/
+        
+        //When using data samples, weight=1
+        Float_t weight = scaleFactor*m_mcWeight;
+            
             
         for(int i=0; i<Lep_ns; i++)
                 {
@@ -301,9 +330,28 @@ int SignalToRoot(void){
                   }*/
                   
                   //here goes the stuff
-                  invmassz1mins=InvMassZ1_min;
-                  invmassz2mins=InvMassZ2_min;
-                  signal->Fill();
+                  
+                  counter++;
+                  if(counter==1) //Fill Train Data 33%
+                  {
+                      fourlepsystems=FourLepSystem_M;
+                      fourlepsystempts=FourLepSystem_pt;
+                      signaltrain->Fill();
+                  }
+                  if(counter==2)
+                  {
+                      fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
+                      signaltest->Fill();
+                  }
+                  if(counter==3)
+                  { 
+                      fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
+                      signaltest->Fill();
+                      counter=0;
+                  }
+
                   
               }
           }
@@ -313,7 +361,8 @@ int SignalToRoot(void){
     }
    
 
-    signal->Write();
+    signaltrain->Write();
+    signaltest->Write();
     target->Close();
     return 0;  
 }

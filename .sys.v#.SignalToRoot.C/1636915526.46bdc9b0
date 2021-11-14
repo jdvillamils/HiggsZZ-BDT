@@ -25,7 +25,7 @@ int SignalToRoot(void){
     schain->AddFile(path+"MC/mc_345060.ggH125_ZZ4lep.4lep.root");
     schain->AddFile(path+"MC/mc_341947.ZH125_ZZ4lep.4lep.root");
     schain->AddFile(path+"MC/mc_341964.WH125_ZZ4lep.4lep.root");
-    schain->AddFile(path+"MC/mc_344235.VBFH125_ZZ4lep.4lep.root");
+    //schain->AddFile(path+"MC/mc_344235.VBFH125_ZZ4lep.4lep.root");//Problematic
 
     //Define variables to use in SIGNAL
     
@@ -98,9 +98,13 @@ int SignalToRoot(void){
     //Output/interest Variables
     Float_t fourlepsystems; //Train
     Float_t fourlepsystems0; //Test -----------0->Test
-
+    Float_t fourlepsystempts; //Train
+    Float_t fourlepsystempts0; //Test -----------0->Test
+    
     signaltrain->Branch("FourLepSystemMTrain", &fourlepsystems);
     signaltest->Branch("FourLepSystemMTest", &fourlepsystems0);
+    signaltrain->Branch("FourLepSystemptTrain", &fourlepsystempts);
+    signaltest->Branch("FourLepSystemptTest", &fourlepsystempts0);
     
     int counter=0;
 
@@ -302,16 +306,19 @@ int SignalToRoot(void){
                   if(counter==1) //Fill Train Data 33%
                   {
                       fourlepsystems=FourLepSystem_M;
+                      fourlepsystempts=FourLepSystem_pt;
                       signaltrain->Fill();
                   }
                   if(counter==2)
                   {
                       fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
                       signaltest->Fill();
                   }
                   if(counter==3)
                   { 
                       fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
                       signaltest->Fill();
                       counter=0;
                   }

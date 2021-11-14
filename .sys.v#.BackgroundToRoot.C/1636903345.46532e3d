@@ -13,19 +13,19 @@
 #include <iostream>
 #include <stdio.h>
 
-int b(void){
+int BackgroundToRoot(void){
     
     //Get Data from repository    
     TString path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep/";
     
     
-    //Creates a Chain for store SIGNAL info
+    //Creates a Chain for store BACKGROUND info
     TChain* bchain = new TChain("mini");
     
     bchain->AddFile(path+"MC/mc_361106.Zee.4lep.root");
     bchain->AddFile(path+"MC/mc_361107.Zmumu.4lep.root");
-    bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root");
-    bchain->AddFile(path+"MC/mc_363490.llll.4lep.root");
+    bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root"); //
+    bchain->AddFile(path+"MC/mc_363490.llll.4lep.root"); //
     bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
 
     
@@ -92,16 +92,24 @@ int b(void){
 
     
     //output root file
+    
     TFile *target = new TFile("DataBackground.root","RECREATE");
-    TTree *background = new TTree("Background","Background from samples");
     
+    TTree *backtrain = new TTree("BackgroundTrain","Background for training");
+    TTree *backtest  = new TTree("BackgroundTest" , "Background for testing");
     
+    //Output/interest Variables
+    Float_t fourlepsystemb; //Train
+    Float_t fourlepsystemb0; //Test -----------0->Test
+    Float_t fourlepsystemptb; //Train
+    Float_t fourlepsystemptb0; //Test -----------0->Test
 
-    Float_t invmassz1minb;
-    Float_t invmassz2minb;
-
-    background->Branch("InvMassZ1_min", &invmassz1minb);
-    background->Branch("InvMassZ2_min", &invmassz2minb);
+    backtrain->Branch("FourLepSystemMTrain", &fourlepsystemb);
+    backtest->Branch("FourLepSystemMTest", &fourlepsystemb0);
+    backtrain->Branch("FourLepSystemptTrain", &fourlepsystemptb);
+    backtest->Branch("FourLepSystemptTest", &fourlepsystemptb0);
+    
+    int counter=0;
 
 
 
@@ -296,9 +304,27 @@ int b(void){
 			    }
                   
                   //here goes the stuff
-                  invmassz1minb=InvMassZ1_minb;
-                  invmassz2minb=InvMassZ2_minb;
-                  background->Fill();
+                  counter++;
+                  if(counter==1) //Fill Train Data 33%
+                  {
+                      fourlepsystemb=FourLepSystem_Mb;
+                      fourlepsystemptb=FourLepSystem_ptb;
+                      backtrain->Fill();
+                  }
+                  if(counter==2)
+                  {
+                      fourlepsystemb0=FourLepSystem_Mb;
+                      fourlepsystemptb0=FourLepSystem_ptb;
+                      backtest->Fill();
+                  }
+                  if(counter==3)
+                  { 
+                      fourlepsystemb0=FourLepSystem_Mb;
+                      fourlepsystemptb0=FourLepSystem_ptb;
+                      backtest->Fill();
+                      counter=0;
+                  }
+
                   
               }
           }
@@ -308,8 +334,8 @@ int b(void){
         }
     }
     
-
-    background->Write();
+    backtrain->Write();
+    backtest->Write();
     target->Close();
     return 0;  
 }

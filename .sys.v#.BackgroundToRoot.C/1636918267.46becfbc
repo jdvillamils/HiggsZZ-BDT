@@ -26,7 +26,7 @@ int BackgroundToRoot(void){
     bchain->AddFile(path+"MC/mc_361107.Zmumu.4lep.root");
     bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root"); //
     bchain->AddFile(path+"MC/mc_363490.llll.4lep.root"); //
-    //bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
+    bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
 
     
     //Define variables to use in BACKGROUND
@@ -118,15 +118,11 @@ int BackgroundToRoot(void){
     Float_t fourlepsystemb0; //Test -----------0->Test
     Float_t fourlepsystemptb; //Train
     Float_t fourlepsystemptb0; //Test -----------0->Test
-    Float_t wbtrain;
-    Float_t wbtest;
 
     backtrain->Branch("FourLepSystemMTrain", &fourlepsystemb);
     backtest->Branch("FourLepSystemMTest", &fourlepsystemb0);
     backtrain->Branch("FourLepSystemptTrain", &fourlepsystemptb);
     backtest->Branch("FourLepSystemptTest", &fourlepsystemptb0);
-    backtrain->Branch("WeightBackTrain", &wbtrain);
-    backtest->Branch("WeightBackTest", &wbtest);
     
     int counter=0;
 
@@ -150,19 +146,6 @@ int BackgroundToRoot(void){
         int goodlep_indexb[Lep_nb];
         int goodlep_nb = 0;
         int lep_indexb =0;
-            
-        Float_t scaleFactor = scaleFactor_ELE*scaleFactor_MUON*scaleFactor_LepTRIGGER*scaleFactor_PILEUP;
-      
-        Float_t m_mcWeight = mcWeight;
-            
-       //This option is only used when a sample from any "single" process is being added
-            /*{
-        TString option = GetOption();
-        if(option.Contains("single")) { m_mcWeight = (mcWeight/TMath::Abs(mcWeight)); } // set to 1 or -1 for single top MCs
-      }*/
-        
-        //When using data samples, weight=1
-        Float_t weight = scaleFactor*m_mcWeight;
             
         for(int i=0; i<Lep_nb; i++)
                 {
@@ -341,21 +324,18 @@ int BackgroundToRoot(void){
                   {
                       fourlepsystemb=FourLepSystem_Mb;
                       fourlepsystemptb=FourLepSystem_ptb;
-                      wbtrain=weight;
                       backtrain->Fill();
                   }
                   if(counter==2)
                   {
                       fourlepsystemb0=FourLepSystem_Mb;
                       fourlepsystemptb0=FourLepSystem_ptb;
-                      wbtest=weight;
                       backtest->Fill();
                   }
                   if(counter==3)
                   { 
                       fourlepsystemb0=FourLepSystem_Mb;
                       fourlepsystemptb0=FourLepSystem_ptb;
-                      wbtest=weight;
                       backtest->Fill();
                       counter=0;
                   }

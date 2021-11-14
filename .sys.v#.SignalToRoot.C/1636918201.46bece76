@@ -121,9 +121,9 @@ int SignalToRoot(void){
     
     signaltrain->Branch("FourLepSystemMTrain", &fourlepsystems);
     signaltest->Branch("FourLepSystemMTest", &fourlepsystems0);
+    signaltest->Branch("WeightSignalTrain", &wstrain);
     signaltrain->Branch("FourLepSystemptTrain", &fourlepsystempts);
     signaltest->Branch("FourLepSystemptTest", &fourlepsystempts0);
-    signaltrain->Branch("WeightSignalTrain", &wstrain);
     signaltest->Branch("WeightSignalTest", &wstest);
     
     int counter=0;
