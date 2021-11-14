@@ -17,8 +17,8 @@ int mergeTestData(void){
     
     TChain* sigchain = new TChain("Signal");
     TChain* bacchain = new TChain("Background");
-    sigchain->AddFile("RootFiles/DataTest.root");
-    bacchain->AddFile("RootFiles/DataTest.root");
+    sigchain->AddFile("DataTest.root");
+    bacchain->AddFile("DataTest.root");
     
     Float_t fours;
     Float_t fourb;
