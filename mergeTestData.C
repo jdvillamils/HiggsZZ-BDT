@@ -1,3 +1,5 @@
+//Combines the signal and background trees for future testing 
+
 #include <iostream>
 #include <fstream>
 #include <string>

@@ -16,19 +16,26 @@
 int merge(void){
     
     
-    TChain* mchain = new TChain("Signal");
-    TChain* nchain = new TChain("Background");
-    bacchain->AddFile("DataBackground.root");
-    sigchain->AddFile("DataSignal.root");
+    
     
     //----------------------
         //Train
     //---------------------
-//    /*{
+    /*{
+    
+    TChain* sigchain = new TChain("SignalTrain");
+    TChain* bacchain = new TChain("BackgroundTrain");
+    bacchain->AddFile("DataBackground.root");
+    sigchain->AddFile("DataSignal.root");
+    
     Float_t foursignaltrain;
     Float_t fourbacktrain;
+    Float_t ptsignaltrain;
+    Float_t ptbacktrain;
     sigchain->SetBranchAddress("FourLepSystemMTrain", &foursignaltrain);
+    sigchain->SetBranchAddress("FourLepSystemptTrain", &ptsignaltrain);
     bacchain->SetBranchAddress("FourLepSystemMTrain", &fourbacktrain);
+    bacchain->SetBranchAddress("FourLepSystemptTrain", &ptbacktrain);
     
     
     TFile *target = new TFile("DataTrain.root","RECREATE");
@@ -38,9 +45,13 @@ int merge(void){
     
     Float_t fourtrainsignal;
     Float_t fourtrainback;
+    Float_t pttrainsignal;
+    Float_t pttrainback;
     
     signal->Branch("FourLepSystemM", &fourtrainsignal);
-    background->Branch("ForuLepSystemM", &fourtrainback);
+    signal->Branch("FourLepSystempt", &pttrainsignal);
+    background->Branch("FourLepSystemM", &fourtrainback);
+    background->Branch("FourLepSystempt", &pttrainback);
     
     int nentries, nbytes, k;
 
@@ -49,6 +60,7 @@ int merge(void){
     {
         nbytes = sigchain->GetEntry(k);
         fourtrainsignal=foursignaltrain;
+        pttrainsignal=ptsignaltrain;
         signal->Fill();
     }
     
@@ -59,24 +71,34 @@ int merge(void){
     {
         nbytesb = bacchain->GetEntry(j);
         fourtrainback=fourbacktrain;
+        pttrainback=ptbacktrain;
         background->Fill();
     }
     signal->Write();
     background->Write();
     target->Close();
     return 0;
-//   }*/
+//  }*/
     
     
     //----------------
-        //Background
+        //Test
     //-----------------
     
-//    /*{    
+ //  /*{    
+    TChain* sigchain = new TChain("SignalTest");
+    TChain* bacchain = new TChain("BackgroundTest");
+    bacchain->AddFile("DataBackground.root");
+    sigchain->AddFile("DataSignal.root");
+    
     Float_t foursignaltest;
     Float_t fourbacktest;
-    sigchain->SetBranchAddress("FourLepSystemMTest", &foursignaltrain);
-    bacchain->SetBranchAddress("FourLepSystemMTest", &fourbacktrain);
+    Float_t ptsignaltest;
+    Float_t ptbacktest;
+    sigchain->SetBranchAddress("FourLepSystemMTest", &foursignaltest);
+    sigchain->SetBranchAddress("FourLepSystemptTest", &ptsignaltest);
+    bacchain->SetBranchAddress("FourLepSystemMTest", &fourbacktest);
+    bacchain->SetBranchAddress("FourLepSystemptTest", &ptbacktest);
     
     
     TFile *target = new TFile("DataTest.root","RECREATE");
@@ -86,9 +108,13 @@ int merge(void){
     
     Float_t fourtestsignal;
     Float_t fourtestback;
+    Float_t pttestsignal;
+    Float_t pttestback;
     
     signal->Branch("FourLepSystemM", &fourtestsignal);
-    background->Branch("ForuLepSystemM", &fourtestback);
+    signal->Branch("FourLepSystempt", &pttestsignal);
+    background->Branch("FourLepSystemM", &fourtestback);
+    background->Branch("FourLepSystempt", &pttestback);
     
     int nentries, nbytes, k;
 
@@ -97,6 +123,7 @@ int merge(void){
     {
         nbytes = sigchain->GetEntry(k);
         fourtestsignal=foursignaltest;
+        pttestsignal=ptsignaltest;
         signal->Fill();
     }
     
@@ -107,6 +134,7 @@ int merge(void){
     {
         nbytesb = bacchain->GetEntry(j);
         fourtestback=fourbacktest;
+        pttestback=ptbacktest;
         background->Fill();
     }
     signal->Write();
