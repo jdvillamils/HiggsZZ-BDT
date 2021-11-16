@@ -262,7 +262,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    // we'll later on use only the "signal" events for the test in this example.
    //
    TFile *input(0);
-   TString fname = "DataTestmerge.root";
+   TString fname = "RootFiles/DataTestmerge.root";
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }

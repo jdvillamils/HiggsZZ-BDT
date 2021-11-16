@@ -1,0 +1,83 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <cmath>
+#include <cstdio>
+#include <time.h>
+#include <TROOT.h>
+#include <TTree.h>
+#include <TFile.h>
+#include <TChain.h>
+#include <iostream>
+#include <stdio.h>
+
+int mergeDataTest(void){
+  
+    //----------------
+        //Test
+    //-----------------
+ 
+    TChain* sigchain = new TChain("SignalTest");
+    TChain* bacchain = new TChain("BackgroundTest");
+    bacchain->AddFile("RootFiles/DataBackground.root");
+    sigchain->AddFile("RootFiles/DataSignal.root");
+    
+    Float_t foursignaltest;
+    Float_t fourbacktest;
+    Float_t ptsignaltest;
+    Float_t ptbacktest;
+    Float_t wstest;
+    Float_t wbtest;
+    sigchain->SetBranchAddress("FourLepSystemMTest", &foursignaltest);
+    sigchain->SetBranchAddress("FourLepSystemptTest", &ptsignaltest);
+    sigchain->SetBranchAddress("WeightSignalTest", &wstest);
+    bacchain->SetBranchAddress("FourLepSystemMTest", &fourbacktest);
+    bacchain->SetBranchAddress("FourLepSystemptTest", &ptbacktest);
+    bacchain->SetBranchAddress("WeightBackTest" &wbtest)
+    
+    
+    TFile *target = new TFile("RootFiles/DataTest.root","RECREATE");
+    
+    TTree *signal = new TTree("Signal","Signal from samples");
+    TTree *background = new TTree("Background","Background from samples");
+    
+    Float_t fourtestsignal;
+    Float_t fourtestback;
+    Float_t pttestsignal;
+    Float_t pttestback;
+    
+    signal->Branch("FourLepSystemM", &fourtestsignal);
+    signal->Branch("FourLepSystempt", &pttestsignal);
+    background->Branch("FourLepSystemM", &fourtestback);
+    background->Branch("FourLepSystempt", &pttestback);
+    
+    int nentries, nbytes, k;
+
+    nentries = (Int_t)sigchain->GetEntries();
+    for (k = 0; k < nentries; k++)
+    {
+        nbytes = sigchain->GetEntry(k);
+        fourtestsignal=foursignaltest;
+        pttestsignal=ptsignaltest;
+        signal->Fill();
+    }
+    
+    int nentriesb, nbytesb, j;
+
+    nentriesb = (Int_t)bacchain->GetEntries();
+    for (j = 0; j < nentriesb; j++)
+    {
+        nbytesb = bacchain->GetEntry(j);
+        fourtestback=fourbacktest;
+        pttestback=ptbacktest;
+        background->Fill();
+    }
+    signal->Write();
+    background->Write();
+    target->Close();
+    return 0;
+
+}
+    

@@ -173,7 +173,7 @@ int TMVAClassification( TString myMethodList = "" )
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
    TFile *input(0);
-   TString fname = "DataTrain.root";
+   TString fname = "RootFiles/DataTrain.root";
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }
@@ -195,7 +195,7 @@ int TMVAClassification( TString myMethodList = "" )
    TTree *background     = (TTree*)input->Get("Background");
 
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-   TString outfileName( "TMVABDT.root" );
+   TString outfileName( "RootFiles/TMVABDT.root" );
    TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
 
    // Create the factory object. Later you can choose the methods
@@ -223,6 +223,7 @@ int TMVAClassification( TString myMethodList = "" )
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
    dataloader->AddVariable( "FourLepSystemM", "FourLepSystemM", "units", 'F' );
    dataloader->AddVariable( "FourLepSystempt", "FourLepSystempt", "units", 'F' );
+   
    //dataloader->AddVariable( "var3",                "Variable 3", "units", 'F' );
    //dataloader->AddVariable( "var4",                "Variable 4", "units", 'F' );
 
@@ -235,9 +236,36 @@ int TMVAClassification( TString myMethodList = "" )
 }*/
 
    // global event weights per tree (see below for setting event-wise weights)
-   Double_t signalWeight     = 1.0; //nn
+  
+    
+   Double_t signalWeight     = 22; //nn
    Double_t backgroundWeight = 1.0;
 
+    
+    
+    Float_t signalweight;
+    Float_t backgroundweight;
+    signalTree->SetBranchAddress( "Weight", &signalweight);
+    //background->SetBranchAddress( "Weight", &backgroundweight );
+    //dataloader->SetSignalWeightExpression    ("signalweight");
+    //dataloader->SetBackgroundWeightExpression( "backgroundweight" );
+    
+   //dataloader->SetSignalWeightExpression    ("signalweight");
+    
+    //for (UInt_t i=0; i<signalTree->GetEntries(); i++) {
+    //   signalTree->GetEntry(i);
+   //    for (UInt_t ivar=0; ivar<4; ivar++) vars[ivar] = treevars[ivar];
+   //    // add training and test events; here: first half is training, second is testing
+   //    // note that the weight can also be event-wise
+   //    if (i < signalTree->GetEntries()/2.0)
+        //dataloader->AddSignalEvent( FourLepSystemM, signalWeight );
+        //dataloader->AddSignalEvent( FourLepSystempt, signalWeight );
+      //  dataloader->SetSignalWeightExpression    (signalweight);
+   //    else                              dataloader->AddSignalTestEvent    ( vars, signalWeight );
+   /// }
+    
+    
+    
    // You can add an arbitrary number of signal or background trees
    dataloader->AddSignalTree    ( signalTree,     signalWeight );
    dataloader->AddBackgroundTree( background, backgroundWeight );
