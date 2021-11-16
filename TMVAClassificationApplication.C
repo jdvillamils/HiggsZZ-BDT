@@ -301,7 +301,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 
     ///-------------------------------------------------------
      Double_t BDTval;
-     TFile *val  = new TFile( "TMVAppValues.root","RECREATE" );
+     TFile *val  = new TFile( "RottFiles/TMVAppValues.root","RECREATE" );
      TTree *valtree  = new TTree( "Values","Data from TMVA" );
      valtree->Branch("BDTval",&BDTval,"BDTval/D");
     
@@ -414,7 +414,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    val->Close();
    // Write histograms
 
-   TFile *target  = new TFile( "TMVApp.root","RECREATE" );
+   TFile *target  = new TFile( "RootFiles/TMVApp.root","RECREATE" );
    if (Use["Likelihood"   ])   histLk     ->Write();
    if (Use["LikelihoodD"  ])   histLkD    ->Write();
    if (Use["LikelihoodPCA"])   histLkPCA  ->Write();
