@@ -2,20 +2,12 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": 2,
    "id": "18308091",
    "metadata": {
     "scrolled": true
    },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Welcome to JupyROOT 6.24/06\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "import root_pandas as rp\n",
     "import pandas as pd\n",
@@ -25,37 +17,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 4,
    "id": "3045bcf4",
    "metadata": {},
-   "outputs": [
-    {
-     "ename": "OSError",
-     "evalue": "cannot read RootFiles/TMVAppValues.root",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mOSError\u001b[0m                                   Traceback (most recent call last)",
-      "\u001b[0;32m/tmp/ipykernel_1496/280564639.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m#dataset=rp.read_root(\"TMVAppValues.root\")\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0mdataset\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mrp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mread_root\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'RootFiles/DataTestmerge.root'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 3\u001b[0;31m \u001b[0mdataset\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'BDTval'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mrp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mread_root\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'RootFiles/TMVAppValues.root'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[0;32m~/.local/lib/python3.9/site-packages/root_pandas/readwrite.py\u001b[0m in \u001b[0;36mread_root\u001b[0;34m(paths, key, columns, ignore, chunksize, where, flatten, *args, **kwargs)\u001b[0m\n\u001b[1;32m    204\u001b[0m     \u001b[0;31m# Use a single file to search for trees and branches, ensuring the key exists\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    205\u001b[0m     \u001b[0;32mfor\u001b[0m \u001b[0mseed_path\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mpaths\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 206\u001b[0;31m         \u001b[0mtrees\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlist_trees\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mseed_path\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    207\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mkey\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mkey\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mtrees\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    208\u001b[0m             \u001b[0;32mcontinue\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/.local/lib/python3.9/site-packages/root_numpy/_tree.py\u001b[0m in \u001b[0;36mlist_trees\u001b[0;34m(filename)\u001b[0m\n\u001b[1;32m     53\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     54\u001b[0m     \"\"\"\n\u001b[0;32m---> 55\u001b[0;31m     \u001b[0;32mreturn\u001b[0m \u001b[0m_librootnumpy\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mlist_trees\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfilename\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     56\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     57\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32mroot_numpy/src/tree.pyx\u001b[0m in \u001b[0;36m_librootnumpy.list_trees\u001b[0;34m()\u001b[0m\n",
-      "\u001b[0;32mroot_numpy/src/tree.pyx\u001b[0m in \u001b[0;36m_librootnumpy.list_objects\u001b[0;34m()\u001b[0m\n",
-      "\u001b[0;31mOSError\u001b[0m: cannot read RootFiles/TMVAppValues.root"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "Error in <TFile::TFile>: file /eos/home-j/jvillami/SWAN_projects/HiggsZZ/HiggsZZ-BDT/RootFiles/TMVAppValues.root does not exist\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "#dataset=rp.read_root(\"TMVAppValues.root\")\n",
-    "dataset=rp.read_root('RootFiles/DataTestmerge.root')\n",
-    "dataset['BDTval']=rp.read_root('RootFiles/TMVAppValues.root')"
+    "dataset=rp.read_root('DataTestmerge.root')\n",
+    "dataset['BDTval']=rp.read_root('TMVAppValues.root')"
    ]
   },
   {

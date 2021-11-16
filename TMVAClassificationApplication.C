@@ -301,7 +301,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 
     ///-------------------------------------------------------
      Double_t BDTval;
-     TFile *val  = new TFile( "RottFiles/TMVAppValues.root","RECREATE" );
+     TFile *val  = new TFile( "RootFiles/TMVAppValues.root","RECREATE" );
      TTree *valtree  = new TTree( "Values","Data from TMVA" );
      valtree->Branch("BDTval",&BDTval,"BDTval/D");
     
