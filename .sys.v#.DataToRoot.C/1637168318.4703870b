@@ -97,7 +97,7 @@ int DataToRoot(void){
     //output root file for TRAINING
     TFile *target = new TFile("RootFiles/DataSamples.root","RECREATE");
     
-    TTree *data = new TTree("Data","Data for test");
+    TTree *data = new TTree("data","Data for test");
     
     
     //Output/interest Variables
