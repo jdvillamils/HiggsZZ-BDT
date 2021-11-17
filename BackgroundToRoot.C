@@ -133,6 +133,8 @@ int BackgroundToRoot(void){
     
     TTree *backtrain = new TTree("BackgroundTrain","Background for training");
     TTree *backtest  = new TTree("BackgroundTest" , "Background for testing");
+    //TTree *zz  = new TTree("zz" , "Background for zz");
+    //TTree *other  = new TTree("other" , "Background for other");
     
     //Output/interest Variables
     Float_t fourlepsystemb; //Train
@@ -141,14 +143,21 @@ int BackgroundToRoot(void){
     Float_t fourlepsystemptb0; //Test -----------0->Test
     Float_t wbtrain;
     Float_t wbtest;
-
-    
+    /*Float_t zzM;
+    Float_t zzpt;
+    Float_t oM;
+    Float_t opt;
+    */
 
     backtrain->Branch("FourLepSystemMTrain", &fourlepsystemb);
     backtest->Branch("FourLepSystemMTest", &fourlepsystemb0);
+    //zz->Branch("ZZM", &zzM);
+    //other->Branch("OM", &oM);
   
     backtrain->Branch("FourLepSystemptTrain", &fourlepsystemptb);
     backtest->Branch("FourLepSystemptTest", &fourlepsystemptb0);
+    //zz->Branch("ZZpt", &zzpt);
+    //other->Branch("opt" ,&opt);
     
     backtrain->Branch("WeightBackTrain", &wbtrain);
     backtest->Branch("WeightBackTest", &wbtest);
@@ -168,6 +177,12 @@ int BackgroundToRoot(void){
     nentriesb = (Int_t)bchain->GetEntries();
     for (b = 0; b < nentriesb; b++)
     {
+        /*
+        int hh=0;
+        TString option = GetOption();
+      if(option.Contains("ll")){hh=1;} //this is when samples is from ZZ
+      else{hh=2;}
+          */  
         nbytesb = bchain->GetEntry(b);
         if(TrigEb || TrigMb)
         {
@@ -375,6 +390,7 @@ int BackgroundToRoot(void){
                       fourlepsystemptb0=FourLepSystem_ptb;
                       wbtest=weight;
                       backtest->Fill();
+                      
                   }
                   if(counter==3)
                   { 
@@ -396,6 +412,8 @@ int BackgroundToRoot(void){
     
     backtrain->Write();
     backtest->Write();
+    zz->Write();
+    other->Write();
     target->Close();
     return 0;  
 }
