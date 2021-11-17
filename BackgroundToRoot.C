@@ -13,10 +13,11 @@
 #include <iostream>
 #include <stdio.h>
 
+
 int BackgroundToRoot(void){
     
-    //Get Data from repository    
     TString path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep/";
+    
     
     
     //Creates a Chain for store BACKGROUND info
@@ -31,25 +32,24 @@ int BackgroundToRoot(void){
     bchain->AddFile(path+"MC/mc_361106.Zee.4lep.root");
     bchain->AddFile(path+"MC/mc_361107.Zmumu.4lep.root");
     bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root"); 
-    bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
-    bchain->AddFile(path+"MC/mc_361101.Wplusmunu.4lep.root");
-    bchain->AddFile(path+"MC/mc_361100.Wplusenu.4lep.root");
-    bchain->AddFile(path+"MC/mc_361102.Wplustaunu.4lep.root");
-    bchain->AddFile(path+"MC/mc_361102.Wplustaunu.4lep.root");
-    bchain->AddFile(path+"MC/mc_361103.Wminusenu.4lep.root");
-    bchain->AddFile(path+"MC/mc_361104.Wminusmunu.4lep.root");
-    bchain->AddFile(path+"MC/mc_361105.Wminustaunu.4lep.root");
-    bchain->AddFile(path+"MC/mc_410011.single_top_tchan.4lep.root");
-    bchain->AddFile(path+"MC/mc_410012.single_antitop_tchan.4lep.root");
-    bchain->AddFile(path+"MC/mc_410013.single_top_wtchan.4lep.root");
-    bchain->AddFile(path+"MC/mc_410014.single_antitop_wtchan.4lep.root");
-    bchain->AddFile(path+"MC/mc_410025.single_top_schan.4lep.root");
-    bchain->AddFile(path+"MC/mc_410026.single_antitop_schan.4lep.root");
-    bchain->AddFile(path+"MC/mc_363491.lllv.4lep.root");
-    bchain->AddFile(path+"MC/mc_363493.lvvv.4lep.root");
-    bchain->AddFile(path+"MC/mc_363358.WqqZll.4lep.root");
-    bchain->AddFile(path+"MC/mc_363489.WlvZqq.4lep.root");
-    
+    /*bchain->AddFile(path+"/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
+    bchain->AddFile(path+"/mc_361101.Wplusmunu.4lep.root");
+    bchain->AddFile(path+"/mc_361100.Wplusenu.4lep.root");
+    bchain->AddFile(path+"/mc_361102.Wplustaunu.4lep.root");
+    bchain->AddFile(path+"/mc_361103.Wminusenu.4lep.root");
+    bchain->AddFile(path+"/mc_361104.Wminusmunu.4lep.root");
+    bchain->AddFile(path+"/mc_361105.Wminustaunu.4lep.root");
+    bchain->AddFile(path+"/mc_410011.single_top_tchan.4lep.root");
+    bchain->AddFile(path+"/mc_410012.single_antitop_tchan.4lep.root");
+    bchain->AddFile(path+"/mc_410013.single_top_wtchan.4lep.root");
+    bchain->AddFile(path+"/mc_410014.single_antitop_wtchan.4lep.root");
+    bchain->AddFile(path+"/mc_410025.single_top_schan.4lep.root");
+    bchain->AddFile(path+"/mc_410026.single_antitop_schan.4lep.root");
+    bchain->AddFile(path+"/mc_363491.lllv.4lep.root");
+    bchain->AddFile(path+"/mc_363493.lvvv.4lep.root");
+    bchain->AddFile(path+"/mc_363358.WqqZll.4lep.root");
+    bchain->AddFile(path+"/mc_363489.WlvZqq.4lep.root");
+    */
     
     //Define variables to use in BACKGROUND
     vector<float> *Lep_ptb;
@@ -76,7 +76,7 @@ int BackgroundToRoot(void){
     Float_t         scaleFactor_LepTRIGGER;
     
 
-   
+   /*
    TBranch        *b_TrigEb;   //!
    TBranch        *b_TrigMb;   //!   //!
    TBranch        *b_Lep_nb;   //!
@@ -100,33 +100,32 @@ int BackgroundToRoot(void){
    TBranch        *b_scaleFactor_MUON;   //!
    TBranch        *b_scaleFactor_LepTRIGGER;     //!
 //---------------------------------------------------
-    
+    */
     //Setting branch address for signal and background
-    bchain->SetBranchAddress("lep_pt", &Lep_ptb, &b_Lep_ptb);
-    bchain->SetBranchAddress("trigE", &TrigEb, &b_TrigEb);
-    bchain->SetBranchAddress("trigM", &TrigMb, &b_TrigMb);
-    bchain->SetBranchAddress("lep_n", &Lep_nb, &b_Lep_nb);
-    bchain->SetBranchAddress("lep_phi", &Lep_phib, &b_Lep_phib);
-    bchain->SetBranchAddress("lep_eta", &Lep_etab, &b_Lep_etab);
-    bchain->SetBranchAddress("lep_E", &Lep_Eb, &b_Lep_Eb);
-    bchain->SetBranchAddress("lep_ptcone30", &Lep_ptcone30b, &b_Lep_ptcone30b);
-    bchain->SetBranchAddress("lep_etcone20", &Lep_etcone20b, &b_Lep_etcone20b);
-    bchain->SetBranchAddress("lep_type", &Lep_typeb, &b_Lep_typeb);
-    bchain->SetBranchAddress("lep_charge", &Lep_chargeb, &b_Lep_chargeb);
-    bchain->SetBranchAddress("lep_trackd0pvunbiased", &lep_trackd0pvunbiasedb, &b_lep_trackd0pvunbiasedb);
-    bchain->SetBranchAddress("lep_tracksigd0pvunbiased", &lep_tracksigd0pvunbiasedb, &b_lep_tracksigd0pvunbiasedb);
-    bchain->SetBranchAddress("lep_z0", &Lep_z0b, &b_Lep_z0b);
-    bchain->SetBranchAddress("jet_n", &jet_nb, &b_jet_nb);
-    bchain->SetBranchAddress("jet_pt", &jet_ptb, &b_jet_ptb);
-    bchain->SetBranchAddress("jet_eta", &jet_etab, &b_jet_etab);
-    bchain->SetBranchAddress("mcWeight", &mcWeight, &b_mcWeight);
-    bchain->SetBranchAddress("scaleFactor_PILEUP", &scaleFactor_PILEUP, &b_scaleFactor_PILEUP);
-    bchain->SetBranchAddress("scaleFactor_ELE", &scaleFactor_ELE, &b_scaleFactor_ELE);
-    bchain->SetBranchAddress("scaleFactor_MUON", &scaleFactor_MUON, &b_scaleFactor_MUON);
-    bchain->SetBranchAddress("scaleFactor_LepTRIGGER", &scaleFactor_LepTRIGGER, &b_scaleFactor_LepTRIGGER);
+    bchain->SetBranchAddress("lep_pt", &Lep_ptb);//, &b_Lep_ptb);
+    bchain->SetBranchAddress("trigE", &TrigEb);//, &b_TrigEb);
+    bchain->SetBranchAddress("trigM", &TrigMb);//, &b_TrigMb);
+    bchain->SetBranchAddress("lep_n", &Lep_nb);//, &b_Lep_nb);
+    bchain->SetBranchAddress("lep_phi", &Lep_phib);//, &b_Lep_phib);
+    bchain->SetBranchAddress("lep_eta", &Lep_etab);//, &b_Lep_etab);
+    bchain->SetBranchAddress("lep_E", &Lep_Eb);//, &b_Lep_Eb);
+    bchain->SetBranchAddress("lep_ptcone30", &Lep_ptcone30b);//, &b_Lep_ptcone30b);
+    bchain->SetBranchAddress("lep_etcone20", &Lep_etcone20b);//, &b_Lep_etcone20b);
+    bchain->SetBranchAddress("lep_type", &Lep_typeb);//, &b_Lep_typeb);
+    bchain->SetBranchAddress("lep_charge", &Lep_chargeb);//, &b_Lep_chargeb);
+    bchain->SetBranchAddress("lep_trackd0pvunbiased", &lep_trackd0pvunbiasedb);//, &b_lep_trackd0pvunbiasedb);
+    bchain->SetBranchAddress("lep_tracksigd0pvunbiased", &lep_tracksigd0pvunbiasedb);//, &b_lep_tracksigd0pvunbiasedb);
+    bchain->SetBranchAddress("lep_z0", &Lep_z0b);//, &b_Lep_z0b);
+    bchain->SetBranchAddress("jet_n", &jet_nb);//, &b_jet_nb);
+    bchain->SetBranchAddress("jet_pt", &jet_ptb);//, &b_jet_ptb);
+    bchain->SetBranchAddress("jet_eta", &jet_etab);//, &b_jet_etab);
+    bchain->SetBranchAddress("mcWeight", &mcWeight);//, &b_mcWeight);
+    bchain->SetBranchAddress("scaleFactor_PILEUP", &scaleFactor_PILEUP);//, &b_scaleFactor_PILEUP);
+    bchain->SetBranchAddress("scaleFactor_ELE", &scaleFactor_ELE);//, &b_scaleFactor_ELE);
+    bchain->SetBranchAddress("scaleFactor_MUON", &scaleFactor_MUON);//, &b_scaleFactor_MUON);
+    bchain->SetBranchAddress("scaleFactor_LepTRIGGER", &scaleFactor_LepTRIGGER);//, &b_scaleFactor_LepTRIGGER);
     
-
-
+    
     
     //output root file
     
@@ -143,10 +142,14 @@ int BackgroundToRoot(void){
     Float_t wbtrain;
     Float_t wbtest;
 
+    
+
     backtrain->Branch("FourLepSystemMTrain", &fourlepsystemb);
     backtest->Branch("FourLepSystemMTest", &fourlepsystemb0);
+  
     backtrain->Branch("FourLepSystemptTrain", &fourlepsystemptb);
     backtest->Branch("FourLepSystemptTest", &fourlepsystemptb0);
+    
     backtrain->Branch("WeightBackTrain", &wbtrain);
     backtest->Branch("WeightBackTest", &wbtest);
     
@@ -396,3 +399,4 @@ int BackgroundToRoot(void){
     target->Close();
     return 0;  
 }
+
