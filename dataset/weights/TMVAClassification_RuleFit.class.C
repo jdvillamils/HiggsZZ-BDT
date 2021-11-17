@@ -10,7 +10,7 @@ Method         : RuleFit::RuleFit
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.24/06       [399366]
 Creator        : jvillami
-Date           : Tue Nov 16 02:32:55 2021
+Date           : Wed Nov 17 07:07:35 2021
 Host           : Linux centos7-docker 4.18.0-305.12.1.el8_4.x86_64 #1 SMP Wed Aug 11 01:59:55 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /eos/home-j/jvillami/SWAN_projects/HiggsZZ/HiggsZZ-BDT
 Training events: 2000
@@ -52,8 +52,8 @@ RFNendnodes: "4" [RFF: Average number of end nodes]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 2
-FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [67.0941925049,1786.59790039]
-FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.590397298336,716.740539551]
+FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [64.5923995972,1060.39038086]
+FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.88065713644,627.260620117]
 NSpec 0
 
 
@@ -181,25 +181,28 @@ class ReadRuleFit : public IClassifierReader {
 void   ReadRuleFit::Initialize(){}
 void   ReadRuleFit::Clear(){}
 double ReadRuleFit::GetMvaValue__( const std::vector<double>& inputValues ) const {
-   double rval=-2.329251193;
+   double rval=0.2067900609;
    //
    // here follows all rules ordered in importance (most important first)
    // at the end of each line, the relative importance of the rule is given
    //
-   if ((113.8606567<inputValues[0])&&(inputValues[0]<148.9753265)) rval+=1.769562309;   // importance = 1.000
-   if ((inputValues[0]<230.8564453)) rval+=1.621917509;   // importance = 0.764
-   if ((inputValues[0]<125.4749603)&&(inputValues[1]<102.8975601)) rval+=0.2656690423;   // importance = 0.147
-   if ((34.69278336<inputValues[1])) rval+=0.1520330455;   // importance = 0.086
-   if ((inputValues[0]<125.4749603)&&(24.83190346<inputValues[1])&&(inputValues[1]<102.8975601)) rval+=0.06381213996;   // importance = 0.031
-   if ((inputValues[0]<230.8564453)&&(52.1933403<inputValues[1])) rval+=0.05275516403;   // importance = 0.027
-   if ((125.7178726<inputValues[0])&&(inputValues[0]<312.7375793)&&(17.7486248<inputValues[1])) rval+=-0.01441878583;   // importance = 0.008
-   if ((118.6043472<inputValues[0])&&(inputValues[0]<140.6536407)&&(inputValues[1]<15.49442577)) rval+=0.02281666636;   // importance = 0.008
+   if ((132.3301697<inputValues[0])) rval+=-1.145659635;   // importance = 1.000
+   if ((inputValues[0]<112.0113525)&&(inputValues[1]<120.191124)) rval+=-1.260975113;   // importance = 0.576
+   if ((117.9698792<inputValues[0])&&(inputValues[0]<132.3301697)) rval+=0.6407573375;   // importance = 0.565
+   if ((inputValues[0]<120.5233002)&&(23.53686523<inputValues[1])) rval+=0.2717402896;   // importance = 0.142
+   if ((inputValues[0]<206.8492584)) rval+=0.1731957721;   // importance = 0.142
+   if ((132.3301697<inputValues[0])&&(inputValues[1]<60.73735809)) rval+=-0.09762049541;   // importance = 0.076
+   if ((inputValues[0]<157.199707)&&(9.757678986<inputValues[1])&&(inputValues[1]<120.191124)) rval+=0.04717976501;   // importance = 0.042
+   if ((122.5824356<inputValues[0])&&(inputValues[0]<157.199707)&&(9.757678986<inputValues[1])&&(inputValues[1]<120.191124)) rval+=-0.03825121007;   // importance = 0.030
+   if ((132.3301697<inputValues[0])&&(18.03186607<inputValues[1])) rval+=-0.0325746448;   // importance = 0.027
+   if ((inputValues[1]<90.36351013)) rval+=-0.03341197455;   // importance = 0.024
+   if ((30.70827484<inputValues[1])) rval+=-0.0217394221;   // importance = 0.019
+   if ((112.0113525<inputValues[0])&&(inputValues[0]<292.6783142)&&(35.80201721<inputValues[1])) rval+=0.003897962679;   // importance = 0.003
    //
    // here follows all linear terms
    // at the end of each line, the relative importance of the term is given
    //
-   rval+=-0.003574576754*std::min( double(514.3425903), std::max( double(inputValues[0]), double(89.20198059)));   // importance = 0.451
-   rval+=0.00054349993*std::min( double(218.5513916), std::max( double(inputValues[1]), double(4.548130512)));   // importance = 0.036
+   rval+=-0.0003847341239*std::min( double(507.0000916), std::max( double(inputValues[0]), double(89.33795929)));   // importance = 0.079
    return rval;
 }
 inline double ReadRuleFit::GetMvaValue( const std::vector<double>& inputValues ) const
