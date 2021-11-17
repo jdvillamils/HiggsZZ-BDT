@@ -22,16 +22,12 @@ int BackgroundToRoot(void){
     //Creates a Chain for store BACKGROUND info
     TChain* bchain = new TChain("mini");
     
-    //Backgrounds from ZZ
-    bchain->AddFile(path+"MC/mc_363490.llll.4lep.root");
-    bchain->AddFile(path+"MC/mc_363356.ZqqZll.4lep.root");
-    bchain->AddFile(path+"MC/mc_363492.llvv.4lep.root");
-    
-    //minor bkgs
     bchain->AddFile(path+"MC/mc_361106.Zee.4lep.root");
     bchain->AddFile(path+"MC/mc_361107.Zmumu.4lep.root");
     bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root"); //
-    bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
+    bchain->AddFile(path+"MC/mc_363490.llll.4lep.root"); //
+    //bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
+
     
     //Define variables to use in BACKGROUND
     vector<float> *Lep_ptb;
