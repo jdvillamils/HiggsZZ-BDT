@@ -30,8 +30,26 @@ int BackgroundToRoot(void){
     //minor bkgs
     bchain->AddFile(path+"MC/mc_361106.Zee.4lep.root");
     bchain->AddFile(path+"MC/mc_361107.Zmumu.4lep.root");
-    bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root"); //
+    bchain->AddFile(path+"MC/mc_410000.ttbar_lep.4lep.root"); 
     bchain->AddFile(path+"MC/mc_361108.Ztautau.4lep.root"); //not at HZZ JN
+    bchain->AddFile(path+"MC/mc_361101.Wplusmunu.4lep.root");
+    bchain->AddFile(path+"MC/mc_361100.Wplusenu.4lep.root");
+    bchain->AddFile(path+"MC/mc_361102.Wplustaunu.4lep.root");
+    bchain->AddFile(path+"MC/mc_361102.Wplustaunu.4lep.root");
+    bchain->AddFile(path+"MC/mc_361103.Wminusenu.4lep.root");
+    bchain->AddFile(path+"MC/mc_361104.Wminusmunu.4lep.root");
+    bchain->AddFile(path+"MC/mc_361105.Wminustaunu.4lep.root");
+    bchain->AddFile(path+"MC/mc_410011.single_top_tchan.4lep.root");
+    bchain->AddFile(path+"MC/mc_410012.single_antitop_tchan.4lep.root");
+    bchain->AddFile(path+"MC/mc_410013.single_top_wtchan.4lep.root");
+    bchain->AddFile(path+"MC/mc_410014.single_antitop_wtchan.4lep.root");
+    bchain->AddFile(path+"MC/mc_410025.single_top_schan.4lep.root");
+    bchain->AddFile(path+"MC/mc_410026.single_antitop_schan.4lep.root");
+    bchain->AddFile(path+"MC/mc_363491.lllv.4lep.root");
+    bchain->AddFile(path+"MC/mc_363493.lvvv.4lep.root");
+    bchain->AddFile(path+"MC/mc_363358.WqqZll.4lep.root");
+    bchain->AddFile(path+"MC/mc_363489.WlvZqq.4lep.root");
+    
     
     //Define variables to use in BACKGROUND
     vector<float> *Lep_ptb;
