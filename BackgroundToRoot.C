@@ -76,31 +76,7 @@ int BackgroundToRoot(void){
     Float_t         scaleFactor_LepTRIGGER;
     
 
-   /*
-   TBranch        *b_TrigEb;   //!
-   TBranch        *b_TrigMb;   //!   //!
-   TBranch        *b_Lep_nb;   //!
-   TBranch        *b_Lep_ptb;   //!
-   TBranch        *b_Lep_etab;   //!
-   TBranch        *b_Lep_phib;   //!
-   TBranch        *b_Lep_Eb;   //!
-   TBranch        *b_Lep_z0b;   //!
-   TBranch        *b_Lep_chargeb;   //!
-   TBranch        *b_Lep_typeb; 
-   TBranch        *b_Lep_ptcone30b;   //!
-   TBranch        *b_Lep_etcone20b;   //!
-   TBranch        *b_lep_trackd0pvunbiasedb;   //!
-   TBranch        *b_lep_tracksigd0pvunbiasedb;   //!
-   TBranch        *b_jet_nb;   //!
-   TBranch        *b_jet_ptb;   //!
-   TBranch        *b_jet_etab;
-   TBranch        *b_mcWeight;   //!
-   TBranch        *b_scaleFactor_PILEUP;   //!
-   TBranch        *b_scaleFactor_ELE;   //!
-   TBranch        *b_scaleFactor_MUON;   //!
-   TBranch        *b_scaleFactor_LepTRIGGER;     //!
-//---------------------------------------------------
-    */
+
     //Setting branch address for signal and background
     bchain->SetBranchAddress("lep_pt", &Lep_ptb);//, &b_Lep_ptb);
     bchain->SetBranchAddress("trigE", &TrigEb);//, &b_TrigEb);
@@ -133,9 +109,7 @@ int BackgroundToRoot(void){
     
     TTree *backtrain = new TTree("BackgroundTrain","Background for training");
     TTree *backtest  = new TTree("BackgroundTest" , "Background for testing");
-    //TTree *zz  = new TTree("zz" , "Background for zz");
-    //TTree *other  = new TTree("other" , "Background for other");
-    
+
     //Output/interest Variables
     Float_t fourlepsystemb; //Train
     Float_t fourlepsystemb0; //Test -----------0->Test
@@ -143,21 +117,15 @@ int BackgroundToRoot(void){
     Float_t fourlepsystemptb0; //Test -----------0->Test
     Float_t wbtrain;
     Float_t wbtest;
-    /*Float_t zzM;
-    Float_t zzpt;
-    Float_t oM;
-    Float_t opt;
-    */
+
 
     backtrain->Branch("FourLepSystemMTrain", &fourlepsystemb);
     backtest->Branch("FourLepSystemMTest", &fourlepsystemb0);
-    //zz->Branch("ZZM", &zzM);
-    //other->Branch("OM", &oM);
+
   
     backtrain->Branch("FourLepSystemptTrain", &fourlepsystemptb);
     backtest->Branch("FourLepSystemptTest", &fourlepsystemptb0);
-    //zz->Branch("ZZpt", &zzpt);
-    //other->Branch("opt" ,&opt);
+
     
     backtrain->Branch("WeightBackTrain", &wbtrain);
     backtest->Branch("WeightBackTest", &wbtest);
@@ -177,12 +145,7 @@ int BackgroundToRoot(void){
     nentriesb = (Int_t)bchain->GetEntries();
     for (b = 0; b < nentriesb; b++)
     {
-        /*
-        int hh=0;
-        TString option = GetOption();
-      if(option.Contains("ll")){hh=1;} //this is when samples is from ZZ
-      else{hh=2;}
-          */  
+
         nbytesb = bchain->GetEntry(b);
         if(TrigEb || TrigMb)
         {
@@ -412,8 +375,6 @@ int BackgroundToRoot(void){
     
     backtrain->Write();
     backtest->Write();
-    zz->Write();
-    other->Write();
     target->Close();
     return 0;  
 }
