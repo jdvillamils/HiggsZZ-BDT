@@ -118,22 +118,15 @@ int DataToRoot(void){
   
 
         
-    int cut1=0;
-    int cut2=0;
-    int cut3=0;
-    int cut4=0;
-    int cut5=0;
-    int cut6=0;
    int nentries, nbytes, k;
 
     nentries = (Int_t)schain->GetEntries();
     for (k = 0; k < nentries; k++)
     {
-        cut1++;
         nbytes = schain->GetEntry(k);
         if(TrigEs || TrigMs)
         {
-            cut2++;
+            
         int goodlep_index[Lep_ns];
         int goodlep_n = 0;
         int lep_index =0;
@@ -171,7 +164,6 @@ int DataToRoot(void){
                       
             if(goodlep_n == 4 )
 	    {
-                cut3++;
 	      
 	      int goodlep1_index = goodlep_index[0];
 	      int goodlep2_index = goodlep_index[1];
@@ -314,7 +306,6 @@ int DataToRoot(void){
                   }*/
                   
                   //here goes the stuff
-                  cut4++;
 
                       fourlepsystems=FourLepSystem_M;
                       fourlepsystempts=FourLepSystem_pt;
@@ -329,10 +320,8 @@ int DataToRoot(void){
         }
         }
     }
-    std::cout<<cut1<<std::endl;
-    std::cout<<cut2<<std::endl;
-    std::cout<<cut3<<std::endl;
-    std::cout<<cut4<<std::endl;
+   
+
     data->Write();
     target->Close();
     return 0;  

@@ -329,10 +329,10 @@ int DataToRoot(void){
         }
         }
     }
-    std::cout<<cut1<<std::endl;
-    std::cout<<cut2<<std::endl;
-    std::cout<<cut3<<std::endl;
-    std::cout<<cut4<<std::endl;
+    std::cout<<cut1<<cout::endl;
+    std::cout<<cut2<<cout::endl;
+    std::cout<<cut3<<cout::endl;
+    std::cout<<cut4<<cout::endl;
     data->Write();
     target->Close();
     return 0;  
