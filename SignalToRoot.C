@@ -366,8 +366,20 @@ int SignalToRoot(void){
                       wstrain=weight;
                       signaltrain->Fill();
                   }
-                  if(counter==2 || counter==3)
+                  if(counter==2)
                   {
+                      fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
+                      invmassz10=InvMassZ1_min;
+                      invmassz20=InvMassZ2_min;
+                      fourrap0=FourLepSystem_y;
+                      foure0=FourLepSystem_E;
+                      wstest=weight;
+                      signaltest->Fill();
+                  }
+                   if(counter==3)
+                  {
+                      counter=0;
                       fourlepsystems0=FourLepSystem_M;
                       fourlepsystempts0=FourLepSystem_pt;
                       invmassz10=InvMassZ1_min;

@@ -115,18 +115,30 @@ int BackgroundToRoot(void){
     Float_t fourlepsystemb0; //Test -----------0->Test
     Float_t fourlepsystemptb; //Train
     Float_t fourlepsystemptb0; //Test -----------0->Test
+    Float_t invmassz1;
+    Float_t invmassz2;
+    Float_t invmassz10;
+    Float_t invmassz20;
+    Float_t fourrap;
+    Float_t fourrap0;
+    Float_t foure;
+    Float_t foure0;
     Float_t wbtrain;
     Float_t wbtest;
 
 
     backtrain->Branch("FourLepSystemMTrain", &fourlepsystemb);
     backtest->Branch("FourLepSystemMTest", &fourlepsystemb0);
-
-  
     backtrain->Branch("FourLepSystemptTrain", &fourlepsystemptb);
     backtest->Branch("FourLepSystemptTest", &fourlepsystemptb0);
-
-    
+    backtrain->Branch("InvMassZ1Train", &invmassz1);
+    backtest->Branch("InvMassZ1Test", &invmassz10);
+    backtrain->Branch("InvMassZ2Train", &invmassz2);
+    backtest->Branch("InvMassZ2Test", &invmassz20);
+    backtrain->Branch("FourLepRapidityTrain", &fourrap);
+    backtest->Branch("FourLepRapidityTest", &fourrap0);
+    backtrain->Branch("FourLepSystemETrain", &foure);
+    backtest->Branch("FourLepSystemETest", &foure0);
     backtrain->Branch("WeightBackTrain", &wbtrain);
     backtest->Branch("WeightBackTest", &wbtest);
     
@@ -320,6 +332,7 @@ int BackgroundToRoot(void){
 			  float FourLepSystem_Mb = FourLepSystemb.Mag()/1000.;
 			  float FourLepSystem_ptb = FourLepSystemb.Pt()/1000.;
 			  float FourLepSystem_yb = FourLepSystemb.Rapidity();
+              float FourLepSystem_Eb = FourLepSystemb.E()/1000.;
 			 
 
                           //Preselection of good jets
@@ -344,6 +357,10 @@ int BackgroundToRoot(void){
                   {
                       fourlepsystemb=FourLepSystem_Mb;
                       fourlepsystemptb=FourLepSystem_ptb;
+                      invmassz1=InvMassZ1_minb;
+                      invmassz2=InvMassZ2_minb;
+                      fourrap=FourLepSystem_yb;
+                      foure=FourLepSystem_Eb;
                       wbtrain=weight;
                       backtrain->Fill();
                   }
@@ -351,6 +368,10 @@ int BackgroundToRoot(void){
                   {
                       fourlepsystemb0=FourLepSystem_Mb;
                       fourlepsystemptb0=FourLepSystem_ptb;
+                      invmassz10=InvMassZ1_minb;
+                      invmassz20=InvMassZ2_minb;
+                      fourrap0=FourLepSystem_yb;
+                      foure0=FourLepSystem_Eb;
                       wbtest=weight;
                       backtest->Fill();
                       
@@ -359,6 +380,10 @@ int BackgroundToRoot(void){
                   { 
                       fourlepsystemb0=FourLepSystem_Mb;
                       fourlepsystemptb0=FourLepSystem_ptb;
+                      invmassz10=InvMassZ1_minb;
+                      invmassz20=InvMassZ2_minb;
+                      fourrap0=FourLepSystem_yb;
+                      foure0=FourLepSystem_Eb;
                       wbtest=weight;
                       backtest->Fill();
                       counter=0;
