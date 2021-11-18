@@ -116,14 +116,6 @@ int SignalToRoot(void){
     Float_t fourlepsystems0; //Test -----------0->Test
     Float_t fourlepsystempts; //Train
     Float_t fourlepsystempts0; //Test -----------0->Test
-    Float_t invmassz1;
-    Float_t invmassz2;
-    Float_t invmassz10;
-    Float_t invmassz20;
-    Float_t fourrap;
-    Float_t fourrap0;
-    Float_t foure;
-    Float_t foure0;
     Float_t wstrain;
     Float_t wstest;
     
@@ -131,14 +123,6 @@ int SignalToRoot(void){
     signaltest->Branch("FourLepSystemMTest", &fourlepsystems0);
     signaltrain->Branch("FourLepSystemptTrain", &fourlepsystempts);
     signaltest->Branch("FourLepSystemptTest", &fourlepsystempts0);
-    signaltrain->Branch("InvMassZ1Train", &invmassz1);
-    signaltest->Branch("InvMassZ1Test", &invmassz10);
-    signaltrain->Branch("InvMassZ2Train", &invmassz2);
-    signaltest->Branch("InvMassZ2Test", &invmassz20);
-    signaltrain->Branch("FourLepRapidityTrain", &fourrap);
-    signaltest->Branch("FourLepRapidityTest", &fourrap0);
-    signaltrain->Branch("FourLepSystemETrain", &foure);
-    signaltest->Branch("FourLepSystemETest", &foure0);
     signaltrain->Branch("WeightSignalTrain", &wstrain);
     signaltest->Branch("WeightSignalTest", &wstest);
     
@@ -332,7 +316,6 @@ int SignalToRoot(void){
 			  float FourLepSystem_M = FourLepSystem.Mag()/1000.;
 			  float FourLepSystem_pt = FourLepSystem.Pt()/1000.;
 			  float FourLepSystem_y = FourLepSystem.Rapidity();
-              float FourLepSystem_E = FourLepSystem.E()/1000.;
 			 
 
                           //Preselection of good jets
@@ -359,23 +342,23 @@ int SignalToRoot(void){
                   {
                       fourlepsystems=FourLepSystem_M;
                       fourlepsystempts=FourLepSystem_pt;
-                      invmassz1=InvMassZ1_min;
-                      invmassz2=InvMassZ2_min;
-                      fourrap=FourLepSystem_y;
-                      foure=FourLepSystem_E;
                       wstrain=weight;
                       signaltrain->Fill();
                   }
-                  if(counter==2 || counter==3)
+                  if(counter==2)
                   {
                       fourlepsystems0=FourLepSystem_M;
                       fourlepsystempts0=FourLepSystem_pt;
-                      invmassz10=InvMassZ1_min;
-                      invmassz20=InvMassZ2_min;
-                      fourrap0=FourLepSystem_y;
-                      foure0=FourLepSystem_E;
                       wstest=weight;
                       signaltest->Fill();
+                  }
+                  if(counter==3)
+                  { 
+                      fourlepsystems0=FourLepSystem_M;
+                      fourlepsystempts0=FourLepSystem_pt;
+                      wstest=weight;
+                      signaltest->Fill();
+                      counter=0;
                   }
 
                   

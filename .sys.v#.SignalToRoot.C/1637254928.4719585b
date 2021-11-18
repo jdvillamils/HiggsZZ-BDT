@@ -120,10 +120,6 @@ int SignalToRoot(void){
     Float_t invmassz2;
     Float_t invmassz10;
     Float_t invmassz20;
-    Float_t fourrap;
-    Float_t fourrap0;
-    Float_t foure;
-    Float_t foure0;
     Float_t wstrain;
     Float_t wstest;
     
@@ -135,10 +131,6 @@ int SignalToRoot(void){
     signaltest->Branch("InvMassZ1Test", &invmassz10);
     signaltrain->Branch("InvMassZ2Train", &invmassz2);
     signaltest->Branch("InvMassZ2Test", &invmassz20);
-    signaltrain->Branch("FourLepRapidityTrain", &fourrap);
-    signaltest->Branch("FourLepRapidityTest", &fourrap0);
-    signaltrain->Branch("FourLepSystemETrain", &foure);
-    signaltest->Branch("FourLepSystemETest", &foure0);
     signaltrain->Branch("WeightSignalTrain", &wstrain);
     signaltest->Branch("WeightSignalTest", &wstest);
     
@@ -332,7 +324,6 @@ int SignalToRoot(void){
 			  float FourLepSystem_M = FourLepSystem.Mag()/1000.;
 			  float FourLepSystem_pt = FourLepSystem.Pt()/1000.;
 			  float FourLepSystem_y = FourLepSystem.Rapidity();
-              float FourLepSystem_E = FourLepSystem.E()/1000.;
 			 
 
                           //Preselection of good jets
@@ -361,8 +352,6 @@ int SignalToRoot(void){
                       fourlepsystempts=FourLepSystem_pt;
                       invmassz1=InvMassZ1_min;
                       invmassz2=InvMassZ2_min;
-                      fourrap=FourLepSystem_y;
-                      foure=FourLepSystem_E;
                       wstrain=weight;
                       signaltrain->Fill();
                   }
@@ -372,8 +361,6 @@ int SignalToRoot(void){
                       fourlepsystempts0=FourLepSystem_pt;
                       invmassz10=InvMassZ1_min;
                       invmassz20=InvMassZ2_min;
-                      fourrap0=FourLepSystem_y;
-                      foure0=FourLepSystem_E;
                       wstest=weight;
                       signaltest->Fill();
                   }
