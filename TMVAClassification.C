@@ -223,6 +223,10 @@ int TMVAClassification( TString myMethodList = "" )
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
    dataloader->AddVariable( "FourLepSystemM", "FourLepSystemM", "units", 'F' );
    dataloader->AddVariable( "FourLepSystempt", "FourLepSystempt", "units", 'F' );
+    dataloader->AddVariable( "InvMassZ1", "InvMassZ1", "units", 'F' );
+    dataloader->AddVariable( "InvMassZ2", "InvMassZ2", "units", 'F' );
+    dataloader->AddVariable( "FourLepRapidity", "FourLepRapidity", "units", 'F' );
+    dataloader->AddVariable( "FourLepSystemE", "FourLepSystemE", "units", 'F' );
    
    //dataloader->AddVariable( "var3",                "Variable 3", "units", 'F' );
    //dataloader->AddVariable( "var4",                "Variable 4", "units", 'F' );
@@ -239,13 +243,13 @@ int TMVAClassification( TString myMethodList = "" )
   
     
    Double_t signalWeight     = 22; //nn
-   Double_t backgroundWeight = 1.0;
+   Double_t backgroundWeight = 0.5;
 
     
     
-    Float_t signalweight;
-    Float_t backgroundweight;
-    signalTree->SetBranchAddress( "Weight", &signalweight);
+    //Float_t signalweight;
+    //Float_t backgroundweight;
+    //signalTree->SetBranchAddress( "Weight", &signalweight);
     //background->SetBranchAddress( "Weight", &backgroundweight );
     //dataloader->SetSignalWeightExpression    ("signalweight");
     //dataloader->SetBackgroundWeightExpression( "backgroundweight" );

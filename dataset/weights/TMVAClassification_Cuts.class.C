@@ -10,7 +10,7 @@ Method         : Cuts::Cuts
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.24/06       [399366]
 Creator        : jvillami
-Date           : Wed Nov 17 07:07:14 2021
+Date           : Thu Nov 18 19:27:30 2021
 Host           : Linux centos7-docker 4.18.0-305.12.1.el8_4.x86_64 #1 SMP Wed Aug 11 01:59:55 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /eos/home-j/jvillami/SWAN_projects/HiggsZZ/HiggsZZ-BDT
 Training events: 2000
@@ -31,18 +31,34 @@ CreateMVAPdfs: "False" [Create PDFs for classifier outputs (signal and backgroun
 IgnoreNegWeightsInTraining: "False" [Events with negative weights are ignored in the training (but are included for testing and performance evaluation)]
 CutRangeMin[0]: "-1.000000e+00" [Minimum of allowed cut range (set per variable)]
     CutRangeMin[1]: "-1.000000e+00"
+    CutRangeMin[2]: "-1.000000e+00"
+    CutRangeMin[3]: "-1.000000e+00"
+    CutRangeMin[4]: "-1.000000e+00"
+    CutRangeMin[5]: "-1.000000e+00"
 CutRangeMax[0]: "-1.000000e+00" [Maximum of allowed cut range (set per variable)]
     CutRangeMax[1]: "-1.000000e+00"
+    CutRangeMax[2]: "-1.000000e+00"
+    CutRangeMax[3]: "-1.000000e+00"
+    CutRangeMax[4]: "-1.000000e+00"
+    CutRangeMax[5]: "-1.000000e+00"
 VarProp[0]: "FSmart" [Categorisation of cuts]
     VarProp[1]: "FSmart"
+    VarProp[2]: "FSmart"
+    VarProp[3]: "FSmart"
+    VarProp[4]: "FSmart"
+    VarProp[5]: "FSmart"
 ##
 
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 2
+NVar 6
 FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [64.5923995972,1060.39038086]
 FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.88065713644,627.260620117]
+InvMassZ1                     InvMassZ1                     InvMassZ1                     InvMassZ1                     units                             'F'    [10.412405014,291.375732422]
+InvMassZ2                     InvMassZ2                     InvMassZ2                     InvMassZ2                     units                             'F'    [3.34332418442,476.431274414]
+FourLepRapidity               FourLepRapidity               FourLepRapidity               FourLepRapidity               units                             'F'    [-2.15944385529,2.24706530571]
+FourLepSystemE                FourLepSystemE                FourLepSystemE                FourLepSystemE                units                             'F'    [88.8286514282,2069.49804688]
 NSpec 0
 
 
@@ -86,10 +102,10 @@ class ReadCuts : public IClassifierReader {
    ReadCuts( std::vector<std::string>& theInputVars )
       : IClassifierReader(),
         fClassName( "ReadCuts" ),
-        fNvars( 2 )
+        fNvars( 6 )
    {
       // the training input variables
-      const char* inputVars[] = { "FourLepSystemM", "FourLepSystempt" };
+      const char* inputVars[] = { "FourLepSystemM", "FourLepSystempt", "InvMassZ1", "InvMassZ2", "FourLepRapidity", "FourLepSystemE" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -117,10 +133,22 @@ class ReadCuts : public IClassifierReader {
       fVmax[0] = 0;
       fVmin[1] = 0;
       fVmax[1] = 0;
+      fVmin[2] = 0;
+      fVmax[2] = 0;
+      fVmin[3] = 0;
+      fVmax[3] = 0;
+      fVmin[4] = 0;
+      fVmax[4] = 0;
+      fVmin[5] = 0;
+      fVmax[5] = 0;
 
       // initialize input variable types
       fType[0] = 'F';
       fType[1] = 'F';
+      fType[2] = 'F';
+      fType[3] = 'F';
+      fType[4] = 'F';
+      fType[5] = 'F';
 
       // initialize constants
       Initialize();
@@ -150,15 +178,15 @@ class ReadCuts : public IClassifierReader {
    char   GetType( int ivar ) const { return fType[ivar]; }
 
    // normalisation of input variables
-   double fVmin[2];
-   double fVmax[2];
+   double fVmin[6];
+   double fVmax[6];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[2];
+   char   fType[6];
 
    // initialize internal variables
    void Initialize();

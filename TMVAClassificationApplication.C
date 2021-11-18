@@ -137,9 +137,13 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 
    // Create a set of variables and declare them to the reader
    // - the variable names MUST corresponds in name and type to those given in the weight file(s) used
-   Float_t FourLepSystemM, FourLepSystempt;
+   Float_t FourLepSystemM, FourLepSystempt, InvMassZ1, InvMassZ2, FourLepRapidity, FourLepSystemE;
    reader->AddVariable( "FourLepSystemM", &FourLepSystemM );
    reader->AddVariable( "FourLepSystempt", &FourLepSystempt );
+   reader->AddVariable( "InvMassZ1", &InvMassZ1 );
+   reader->AddVariable( "InvMassZ2", &InvMassZ2 );
+   reader->AddVariable( "FourLepRapidity", &FourLepRapidity );
+   reader->AddVariable( "FourLepSystemE", &FourLepSystemE );
     
    // Spectator variables declared in the training have to be added to the reader, too
   /*{ Float_t spec1,spec2;
@@ -262,8 +266,8 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    // we'll later on use only the "signal" events for the test in this example.
    //
    TFile *input(0);
-   TString fname = "RootFiles/DataTestmerge.root";  //For MC Samples
-   //TString fname = "RootFiles/DataSamples.root"; //For Real Data Samples
+   //TString fname = "RootFiles/DataTestmerge.root";  //For MC Samples
+   TString fname = "RootFiles/DataSamples.root"; //For Real Data Samples
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }
@@ -287,9 +291,13 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    //
    std::cout << "--- Select signal sample" << std::endl;
    TTree* theTree = (TTree*)input->Get("Data");
-   //Float_t InvMassZ1_min, InvMassZ2_min;
+    
    theTree->SetBranchAddress( "FourLepSystemM", &FourLepSystemM );
    theTree->SetBranchAddress( "FourLepSystempt", &FourLepSystempt );
+   theTree->SetBranchAddress( "InvMassZ1", &InvMassZ1 );
+   theTree->SetBranchAddress( "InvMassZ2", &InvMassZ2 );
+   theTree->SetBranchAddress( "FourLepRapidity", &FourLepRapidity );
+   theTree->SetBranchAddress( "FourLepSystemE", &FourLepSystemE );
    // Efficiency calculator for cut method
    Int_t    nSelCutsGA = 0;
    Double_t effS       = 0.7;
@@ -302,8 +310,8 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 
     ///-------------------------------------------------------
      Double_t BDTval;
-     TFile *val  = new TFile( "RootFiles/TMVAppValues.root","RECREATE" );  //For MC
-     //TFile *val  = new TFile( "RootFiles/TMVAppValuesData.root","RECREATE" ); //For Data
+     //TFile *val  = new TFile( "RootFiles/TMVAppValues.root","RECREATE" );  //For MC
+     TFile *val  = new TFile( "RootFiles/TMVAppValuesData.root","RECREATE" ); //For Data
      TTree *valtree  = new TTree( "Values","Data from TMVA" );
      valtree->Branch("BDTval",&BDTval,"BDTval/D");
     
@@ -416,8 +424,8 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    val->Close();
    // Write histograms
 
-   TFile *target  = new TFile( "RootFiles/TMVApp.root","RECREATE" ); //For MC
-   //TFile *target  = new TFile( "RootFiles/TMVAppData.root","RECREATE" ); //For Data
+   //TFile *target  = new TFile( "RootFiles/TMVApp.root","RECREATE" ); //For MC
+   TFile *target  = new TFile( "RootFiles/TMVAppData.root","RECREATE" ); //For Data
    if (Use["Likelihood"   ])   histLk     ->Write();
    if (Use["LikelihoodD"  ])   histLkD    ->Write();
    if (Use["LikelihoodPCA"])   histLkPCA  ->Write();
