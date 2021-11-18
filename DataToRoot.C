@@ -103,11 +103,19 @@ int DataToRoot(void){
     //Output/interest Variables
     Float_t fourlepsystems; 
     Float_t fourlepsystempts; 
+    Float_t invmassz1;
+    Float_t invmassz2;
+    Float_t fourrap;
+    Float_t foure;
 
     
     data->Branch("FourLepSystemM", &fourlepsystems);
     data->Branch("FourLepSystempt", &fourlepsystempts);
-
+    data->Branch("InvMassZ1", &invmassz1);
+    data->Branch("InvMassZ2", &invmassz2);
+    data->Branch("FourLepRapidity", &fourrap);
+    data->Branch("FourLepSystemE", &foure);
+  
 
         
    int nentries, nbytes, k;
@@ -278,7 +286,7 @@ int DataToRoot(void){
 			  float FourLepSystem_M = FourLepSystem.Mag()/1000.;
 			  float FourLepSystem_pt = FourLepSystem.Pt()/1000.;
 			  float FourLepSystem_y = FourLepSystem.Rapidity();
-			 
+			  float FourLepSystem_E = FourLepSystem.E()/1000.;
 
                           //Preselection of good jets
 			  int goodjet_n = 0;
@@ -301,12 +309,11 @@ int DataToRoot(void){
 
                       fourlepsystems=FourLepSystem_M;
                       fourlepsystempts=FourLepSystem_pt;
-                      data->Fill();
-                  
-                 
-                  
-
-                  
+                      invmassz1=InvMassZ1_min;
+                      invmassz2=InvMassZ2_min;
+                      fourrap=FourLepSystem_y;
+                      foure=FourLepSystem_E;
+                      data->Fill();    
               }
           }
         }
