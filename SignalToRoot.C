@@ -352,8 +352,8 @@ int SignalToRoot(void){
 			    }
                   }*/
                   
-                  //here goes the stuff
-                  
+
+                      
                   counter++;
                   if(counter==1) //Fill Train Data 33%
                   {
@@ -368,6 +368,7 @@ int SignalToRoot(void){
                   }
                   if(counter==2)
                   {
+                      counter=0;
                       fourlepsystems0=FourLepSystem_M;
                       fourlepsystempts0=FourLepSystem_pt;
                       invmassz10=InvMassZ1_min;
@@ -389,8 +390,6 @@ int SignalToRoot(void){
                       wstest=weight;
                       signaltest->Fill();
                   }
-
-                  
               }
           }
         }

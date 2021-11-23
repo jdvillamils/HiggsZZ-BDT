@@ -10,7 +10,7 @@ Method         : RuleFit::RuleFit
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.24/06       [399366]
 Creator        : jvillami
-Date           : Thu Nov 18 19:27:48 2021
+Date           : Tue Nov 23 02:24:37 2021
 Host           : Linux centos7-docker 4.18.0-305.12.1.el8_4.x86_64 #1 SMP Wed Aug 11 01:59:55 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /eos/home-j/jvillami/SWAN_projects/HiggsZZ/HiggsZZ-BDT
 Training events: 2000
@@ -52,12 +52,12 @@ RFNendnodes: "4" [RFF: Average number of end nodes]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 6
-FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [64.5923995972,1060.39038086]
-FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.88065713644,627.260620117]
-InvMassZ1                     InvMassZ1                     InvMassZ1                     InvMassZ1                     units                             'F'    [10.412405014,291.375732422]
-InvMassZ2                     InvMassZ2                     InvMassZ2                     InvMassZ2                     units                             'F'    [3.34332418442,476.431274414]
-FourLepRapidity               FourLepRapidity               FourLepRapidity               FourLepRapidity               units                             'F'    [-2.15944385529,2.24706530571]
-FourLepSystemE                FourLepSystemE                FourLepSystemE                FourLepSystemE                units                             'F'    [88.8286514282,2069.49804688]
+FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [61.6539802551,1469.16125488]
+FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.635770976543,604.6640625]
+InvMassZ1                     InvMassZ1                     InvMassZ1                     InvMassZ1                     units                             'F'    [0,265.89944458]
+InvMassZ2                     InvMassZ2                     InvMassZ2                     InvMassZ2                     units                             'F'    [0,577.892944336]
+FourLepRapidity               FourLepRapidity               FourLepRapidity               FourLepRapidity               units                             'F'    [-2.32292580605,2.21329307556]
+FourLepSystemE                FourLepSystemE                FourLepSystemE                FourLepSystemE                units                             'F'    [85.2539672852,1805.45080566]
 NSpec 0
 
 
@@ -197,53 +197,63 @@ class ReadRuleFit : public IClassifierReader {
 void   ReadRuleFit::Initialize(){}
 void   ReadRuleFit::Clear(){}
 double ReadRuleFit::GetMvaValue__( const std::vector<double>& inputValues ) const {
-   double rval=-0.6750238032;
+   double rval=-1.086339508;
    //
    // here follows all rules ordered in importance (most important first)
    // at the end of each line, the relative importance of the rule is given
    //
-   if ((134.7967834<inputValues[0])&&(inputValues[5]<371.7814331)) rval+=-1.187743725;   // importance = 1.000
-   if ((133.1237335<inputValues[0])&&(277.4638367<inputValues[5])) rval+=-1.036959888;   // importance = 0.981
-   if ((112.0113525<inputValues[0])) rval+=1.434269905;   // importance = 0.784
-   if ((inputValues[0]<157.199707)) rval+=0.5997926867;   // importance = 0.602
-   if ((inputValues[3]<70.92731476)) rval+=-0.3475595272;   // importance = 0.335
-   if ((inputValues[0]<157.199707)&&(22.16703224<inputValues[3])) rval+=0.3106663549;   // importance = 0.308
-   if ((inputValues[4]<0.5605629086)) rval+=-0.260772373;   // importance = 0.245
-   if ((126.7993393<inputValues[0])&&(inputValues[0]<157.199707)) rval+=-0.4651056954;   // importance = 0.237
-   if ((70.92731476<inputValues[3])) rval+=-0.2406930337;   // importance = 0.232
-   if ((inputValues[0]<157.199707)&&(54.29148102<inputValues[2])) rval+=0.2297300122;   // importance = 0.231
-   if ((inputValues[0]<134.8072052)&&(inputValues[2]<90.32241821)) rval+=0.2026755004;   // importance = 0.207
-   if ((121.9584732<inputValues[0])&&(inputValues[0]<157.199707)&&(inputValues[3]<22.16703224)) rval+=0.3048462324;   // importance = 0.198
-   if ((inputValues[2]<90.68764496)) rval+=-0.2105358595;   // importance = 0.194
-   if ((60.5406456<inputValues[1])&&(inputValues[4]<1.128342748)) rval+=0.1429721773;   // importance = 0.134
-   if ((inputValues[0]<134.7967834)&&(24.85613441<inputValues[3])&&(inputValues[5]<371.7814331)) rval+=0.1390314316;   // importance = 0.129
-   if ((-0.4010409415<inputValues[4])) rval+=-0.1189221912;   // importance = 0.115
-   if ((inputValues[1]<60.73735809)&&(inputValues[5]<277.4638367)) rval+=-0.1123058575;   // importance = 0.114
-   if ((inputValues[0]<157.199707)&&(54.29148102<inputValues[2])&&(0.1666892767<inputValues[4])&&(200.562561<inputValues[5])) rval+=-0.1878451957;   // importance = 0.108
-   if ((inputValues[0]<157.199707)&&(inputValues[3]<22.16703224)) rval+=-0.09841999692;   // importance = 0.083
-   if ((277.4638367<inputValues[5])) rval+=-0.07280803322;   // importance = 0.074
-   if ((123.6075668<inputValues[0])&&(inputValues[0]<134.8072052)&&(inputValues[2]<90.32241821)) rval+=0.08072472843;   // importance = 0.066
-   if ((inputValues[0]<157.199707)&&(inputValues[1]<70.11656952)&&(227.7314606<inputValues[5])) rval+=-0.08312417944;   // importance = 0.052
-   if ((60.73735809<inputValues[1])&&(inputValues[5]<277.4638367)) rval+=0.06473212364;   // importance = 0.047
-   if ((inputValues[0]<157.199707)&&(142.0894775<inputValues[5])&&(inputValues[5]<227.7314606)) rval+=0.04804943062;   // importance = 0.043
-   if ((inputValues[0]<134.7967834)&&(inputValues[3]<24.85613441)&&(inputValues[5]<371.7814331)) rval+=0.03856477627;   // importance = 0.033
-   if ((60.5406456<inputValues[1])&&(inputValues[3]<44.09434509)&&(inputValues[4]<1.128342748)) rval+=0.03662433071;   // importance = 0.028
-   if ((inputValues[2]<83.57504272)&&(-0.7367836237<inputValues[4])&&(inputValues[4]<-0.4010409415)) rval+=0.05911298949;   // importance = 0.025
-   if ((inputValues[2]<50.55002213)&&(inputValues[3]<70.92731476)) rval+=-0.0270762277;   // importance = 0.020
-   if ((inputValues[0]<157.199707)&&(70.11656952<inputValues[1])&&(227.7314606<inputValues[5])) rval+=-0.0285178806;   // importance = 0.015
-   if ((inputValues[3]<70.92731476)&&(138.3945923<inputValues[5])) rval+=-0.01312345404;   // importance = 0.013
-   if ((122.574791<inputValues[0])&&(inputValues[0]<157.199707)&&(22.16703224<inputValues[3])) rval+=0.01205980619;   // importance = 0.011
-   if ((inputValues[2]<50.55002213)&&(inputValues[3]<70.92731476)&&(158.8512573<inputValues[5])) rval+=0.01809773107;   // importance = 0.010
-   if ((inputValues[0]<157.199707)&&(54.29148102<inputValues[2])&&(0.1666892767<inputValues[4])&&(inputValues[5]<200.562561)) rval+=0.01751400367;   // importance = 0.010
-   if ((inputValues[1]<60.5406456)&&(inputValues[4]<1.128342748)) rval+=-0.004961840595;   // importance = 0.005
-   if ((inputValues[0]<159.4302979)&&(inputValues[5]<166.1356201)) rval+=0.004547016232;   // importance = 0.004
-   if ((inputValues[0]<157.199707)&&(54.29148102<inputValues[2])&&(inputValues[4]<0.1666892767)) rval+=-0.003452679419;   // importance = 0.003
+   if ((115.9092026<inputValues[0])&&(inputValues[0]<128.6781311)) rval+=1.014175131;   // importance = 1.000
+   if ((130.8897552<inputValues[0])&&(inputValues[1]<138.9902191)&&(50.64751434<inputValues[2])) rval+=-0.4912932788;   // importance = 0.470
+   if ((inputValues[0]<93.19817352)&&(inputValues[3]<55.03742218)) rval+=-0.9406458533;   // importance = 0.414
+   if ((inputValues[0]<128.6781311)&&(20.42810631<inputValues[3])) rval+=0.4134339603;   // importance = 0.396
+   if ((inputValues[0]<128.6781311)) rval+=0.2820508123;   // importance = 0.276
+   if ((29.39902306<inputValues[1])&&(inputValues[2]<67.41294861)) rval+=0.3111375955;   // importance = 0.233
+   if ((inputValues[0]<195.7022858)&&(168.493927<inputValues[5])) rval+=0.2063533653;   // importance = 0.199
+   if ((inputValues[3]<55.03742218)) rval+=0.1860058999;   // importance = 0.176
+   if ((inputValues[0]<128.6781311)&&(-0.5948424339<inputValues[4])&&(165.9396973<inputValues[5])) rval+=-0.2337703131;   // importance = 0.171
+   if ((21.39689064<inputValues[1])&&(inputValues[1]<86.92552948)&&(0.05318884552<inputValues[4])) rval+=-0.169260612;   // importance = 0.140
+   if ((inputValues[0]<149.434494)&&(inputValues[2]<91.40704346)) rval+=0.1409192413;   // importance = 0.139
+   if ((inputValues[0]<195.7022858)&&(inputValues[1]<19.48051071)&&(-0.162821576<inputValues[4])) rval+=0.2190672417;   // importance = 0.138
+   if ((149.7396088<inputValues[0])&&(58.16227341<inputValues[1])&&(50.64751434<inputValues[2])) rval+=-0.1898467288;   // importance = 0.136
+   if ((14.47925186<inputValues[1])&&(67.41294861<inputValues[2])) rval+=0.1398251417;   // importance = 0.136
+   if ((inputValues[0]<93.19817352)&&(inputValues[3]<55.03742218)&&(inputValues[5]<192.4444885)) rval+=-0.3496662251;   // importance = 0.132
+   if ((128.6781311<inputValues[0])) rval+=-0.1334867937;   // importance = 0.131
+   if ((inputValues[0]<130.8897552)&&(inputValues[1]<138.9902191)&&(50.64751434<inputValues[2])) rval+=0.1328203633;   // importance = 0.128
+   if ((inputValues[0]<128.6781311)&&(inputValues[5]<165.9396973)) rval+=0.1490918488;   // importance = 0.128
+   if ((128.6781311<inputValues[0])&&(61.53556824<inputValues[2])) rval+=-0.1242254754;   // importance = 0.121
+   if ((29.39902306<inputValues[1])&&(inputValues[2]<67.41294861)&&(inputValues[5]<230.4093933)) rval+=0.1805198343;   // importance = 0.111
+   if ((88.63314819<inputValues[2])&&(inputValues[3]<42.07244873)) rval+=0.1484622383;   // importance = 0.109
+   if ((inputValues[5]<412.9105225)) rval+=0.1333249912;   // importance = 0.103
+   if ((inputValues[4]<-0.3788320124)) rval+=0.1014898858;   // importance = 0.097
+   if ((inputValues[0]<128.6781311)&&(inputValues[2]<64.29733276)&&(inputValues[3]<20.42810631)) rval+=-0.1560481639;   // importance = 0.087
+   if ((inputValues[0]<149.7396088)&&(58.16227341<inputValues[1])&&(50.64751434<inputValues[2])&&(27.92465782<inputValues[3])) rval+=0.1519743989;   // importance = 0.072
+   if ((128.6781311<inputValues[0])&&(30.6788559<inputValues[1])&&(inputValues[3]<63.02036285)&&(inputValues[5]<454.6650696)) rval+=0.1668115518;   // importance = 0.068
+   if ((128.6781311<inputValues[0])&&(inputValues[3]<82.55613708)) rval+=0.09387723677;   // importance = 0.066
+   if ((inputValues[0]<144.1566772)&&(38.42065048<inputValues[1])&&(inputValues[3]<16.74100685)&&(0.05318884552<inputValues[4])) rval+=-0.1629272555;   // importance = 0.057
+   if ((55.03742218<inputValues[3])) rval+=-0.05726993662;   // importance = 0.054
+   if ((29.39902306<inputValues[1])&&(inputValues[1]<56.81248093)&&(inputValues[2]<63.30939102)) rval+=-0.09090146171;   // importance = 0.045
+   if ((inputValues[1]<17.81720734)&&(412.9105225<inputValues[5])) rval+=-0.1083987114;   // importance = 0.033
+   if ((inputValues[1]<86.92552948)&&(inputValues[2]<86.91397858)&&(inputValues[4]<0.05318884552)) rval+=-0.04136901558;   // importance = 0.033
+   if ((inputValues[0]<93.19817352)&&(inputValues[3]<55.03742218)&&(inputValues[4]<-1.026863217)&&(192.4444885<inputValues[5])) rval+=-0.1545275415;   // importance = 0.025
+   if ((inputValues[0]<149.7396088)&&(58.16227341<inputValues[1])&&(50.64751434<inputValues[2])) rval+=0.03230388373;   // importance = 0.023
+   if ((inputValues[0]<144.1566772)&&(inputValues[1]<38.42065048)&&(inputValues[3]<16.74100685)&&(0.05318884552<inputValues[4])) rval+=0.04953241622;   // importance = 0.015
+   if ((inputValues[1]<58.16227341)&&(50.64751434<inputValues[2])&&(-0.2986896932<inputValues[4])) rval+=-0.009995255258;   // importance = 0.009
+   if ((inputValues[0]<195.7022858)&&(19.48051071<inputValues[1])) rval+=0.008205254992;   // importance = 0.008
+   if ((inputValues[3]<16.74100685)&&(0.05318884552<inputValues[4])) rval+=-0.01570591644;   // importance = 0.007
+   if ((128.6781311<inputValues[0])&&(inputValues[5]<454.6650696)) rval+=-0.005450089951;   // importance = 0.005
+   if ((128.6781311<inputValues[0])&&(82.55613708<inputValues[3])) rval+=-0.005440298612;   // importance = 0.005
+   if ((86.92552948<inputValues[1])) rval+=0.005779682004;   // importance = 0.005
+   if ((inputValues[1]<29.39902306)&&(inputValues[2]<72.80877686)&&(259.9364014<inputValues[5])) rval+=0.007344734162;   // importance = 0.002
+   if ((inputValues[1]<86.92552948)&&(inputValues[4]<0.05318884552)) rval+=0.001159374479;   // importance = 0.001
    //
    // here follows all linear terms
    // at the end of each line, the relative importance of the term is given
    //
-   rval+=-0.001383504821*std::min( double(104.5007095), std::max( double(inputValues[2]), double(28.9794426)));   // importance = 0.054
-   rval+=-0.0001855229033*std::min( double(861.605835), std::max( double(inputValues[5]), double(119.569252)));   // importance = 0.063
+   rval+=-0.001420674334*std::min( double(464.6682129), std::max( double(inputValues[0]), double(88.87674713)));   // importance = 0.244
+   rval+=0.0002058902918*std::min( double(216.6729126), std::max( double(inputValues[1]), double(3.803842545)));   // importance = 0.020
+   rval+=0.001653248625*std::min( double(102.476532), std::max( double(inputValues[2]), double(31.3080616)));   // importance = 0.061
+   rval+=0.003568198656*std::min( double(153.7820435), std::max( double(inputValues[3]), double(6.807079315)));   // importance = 0.240
+   rval+=-0.02163788775*std::min( double(1.761749625), std::max( double(inputValues[4]), double(-1.676041961)));   // importance = 0.037
    return rval;
 }
 inline double ReadRuleFit::GetMvaValue( const std::vector<double>& inputValues ) const
