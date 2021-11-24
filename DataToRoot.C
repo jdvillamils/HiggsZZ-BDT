@@ -107,6 +107,7 @@ int DataToRoot(void){
     Float_t invmassz2;
     Float_t fourrap;
     Float_t foure;
+    Float_t weight;
 
     
     data->Branch("FourLepSystemM", &fourlepsystems);
@@ -115,6 +116,7 @@ int DataToRoot(void){
     data->Branch("InvMassZ2", &invmassz2);
     data->Branch("FourLepRapidity", &fourrap);
     data->Branch("FourLepSystemE", &foure);
+    data->Branch("Weight", &weight);
   
 
         
@@ -322,6 +324,7 @@ int DataToRoot(void){
                       invmassz2=InvMassZ2_min;
                       fourrap=FourLepSystem_y;
                       foure=FourLepSystem_E;
+                      weight=1;
                       data->Fill();    
               }
           }

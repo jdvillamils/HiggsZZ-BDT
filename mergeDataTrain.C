@@ -14,9 +14,7 @@
 #include <stdio.h>
 
 int mergeDataTrain(void){
-    
-    
-    
+
     
     //----------------------
         //Train
@@ -25,8 +23,15 @@ int mergeDataTrain(void){
     
     TChain* sigchain = new TChain("SignalTrain");
     TChain* bacchain = new TChain("BackgroundTrain");
-    bacchain->AddFile("RootFiles/DataBackground.root");
-    sigchain->AddFile("RootFiles/DataSignal.root");
+    sigchain->AddFile("RootFiles/DataSignal1.root");
+    sigchain->AddFile("RootFiles/DataSignal2.root");
+    sigchain->AddFile("RootFiles/DataSignal3.root");
+    bacchain->AddFile("RootFiles/DataBackground1.root");
+    bacchain->AddFile("RootFiles/DataBackground2.root");
+    bacchain->AddFile("RootFiles/DataBackground3.root");
+    bacchain->AddFile("RootFiles/DataBackground4.root");
+    bacchain->AddFile("RootFiles/DataBackground5.root");
+    
     
     Float_t foursignaltrain;
     Float_t fourbacktrain;

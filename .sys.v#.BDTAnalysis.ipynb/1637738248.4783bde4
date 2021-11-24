@@ -1,0 +1,349 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "18308091",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "import root_pandas as rp\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "e85f2f17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "bck=rp.read_root('RootFiles/DataTest.root','Background')\n",
+    "data=rp.read_root('RootFiles/DataSamples.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "68a15ac6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig['BDTval']=rp.read_root('RootFiles/TMVAppValues.root')\n",
+    "data['BDTval']=rp.read_root('RootFiles/TMVAppValuesData.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "ff0faeb9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signalcut=sig[sig['BDTval']>-0.4]\n",
+    "datacut=data[data['BDTval']>-0.3]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "16d45f32",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(data['FourLepSystemM'],bins=400,alpha=0.7)\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bck['FourLepSystemM'],weights=bck['Weight'],bins=1000,alpha=0.7)\n",
+    "plt.xlim([0,400])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "9a76f1ae",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAXoAAAD4CAYAAADiry33AAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjQuMywgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/MnkTPAAAACXBIWXMAAAsTAAALEwEAmpwYAAAO6klEQVR4nO3dbYxc1X3H8e8/NhCeKkPZUIqx1lSIKoragLY0LRWqILSERHEqVYJKVE5lyVJV06QPiowSNem7tipRkEBILlBowfCCEAWhqA1yiqJKFfEaDBiMgRCKDS7eJHJD+8JA+ffF3IVlvU+ee2bmztnvR7J25u6duT8drX9z5sydmchMJEn1+tCoA0iSBsuil6TKWfSSVDmLXpIqZ9FLUuXWDvNg55xzTk5OTg7zkJI09vbs2fPjzJzo9/ZDLfrJyUmmp6eHeUhJGnsR8Z9tbu/SjSRVbtmij4i7IuJIROybs+3siHg0Il5sfp412JiSpH6tZEZ/N3DNvG3bgV2ZeRGwq7kuSeqgZYs+M78P/HTe5k3APc3le4DPlY0lSSql3zX6czPzMEDz8yOL7RgRWyNiOiKmZ2Zm+jycJKlfA38xNjN3ZOZUZk5NTPR9dpAkqU/9Fv0bEXEeQPPzSLlIkqSS+i36h4HNzeXNwLfLxJEklbaS0yvvB/4DuDgiDkXEFuBvgKsj4kXg6ua6xtnO60adQNKALPvO2Mz8g0V+dVXhLJKkAfCdsZJUOYtekipn0UtS5Sx6SaqcRS9JlbPoJalyFr0kVc6il6TKWfSSVDmLXpIqZ9FLUuUsekmqnEUvSZWz6CWpcha9JFXOopekyln0klQ5i16SKmfRS1LlLHpJqpxFL0mVs+glqXIWvSRVzqKXpMpZ9JJUOYtekipn0UtS5Sx6SaqcRS9JlbPoJalyFr3et/O63j9JVWlV9BHxZxHxbETsi4j7I+LDpYJJksrou+gj4nzgT4GpzPwYsAa4vlQwSVIZbZdu1gKnRsRa4DTg9faRJEkl9V30mfka8PfAq8Bh4L8z87vz94uIrRExHRHTMzMz/SdVcVvu3s2Wu3ePOoakAWuzdHMWsAnYCPwicHpE3DB/v8zckZlTmTk1MTHRf1JJUl/aLN18EvhRZs5k5tvAQ8BvloklSSqlTdG/CnwiIk6LiACuAvaXiSVJKqXNGv3jwIPAE8AzzX3tKJRLklTI2jY3zsyvAl8tlEWSNAC+M1aSKmfRS1LlLHpJqpxFL0mVs+glqXIWvSRVzqKXpMpZ9JJUOYtekipn0UtS5Sx6SaqcRS9JlbPoJalyFr0kVc6il6TKWfSSVLlWXzyiwdm2a9t7l2+96tYRJpE07pzRS1LlLHpJqpxFL0mVs+glqXIWvSRVzqKXpMpZ9JJUOYtekipn0UtS5Xxn7Cp34xtfgZ3rRh1D0gA5o5ekyln0klQ5i16SKmfRS1LlWhV9RKyLiAcj4vmI2B8Rv1EqmCSpjLZn3dwC/Etm/n5EnAycViCTJKmgvos+In4OuAL4PEBmvgW8VSaWJKmUNks3FwIzwD9GxJMRcUdEnD5/p4jYGhHTETE9MzPT4nCSpH60Kfq1wKXA7Zl5CfC/wPb5O2XmjsycysypiYmJFoeTJPWjTdEfAg5l5uPN9QfpFb8kqUP6XqPPzP+KiIMRcXFmHgCuAp4rF211mvul4JJUQtuzbm4E7mvOuHkZ+KP2kSRJJbUq+szcC0yViSJJGgTfGStJlbPoJalyFr0kVc6il6TKWfSSVDmLXpIqZ9FLUuUsekmqnEUvSZWz6CWpcha9JFXOopekyln0klQ5i16SKmfRS1LlLHoBsPfgUfYePDrqGJIGwKKXpMpZ9JJUOYtekipn0UtS5Sx6SaqcRS9JlbPoJalyFr0kVc6il6TKWfSSVDmLXpIqZ9FLUuUsekmqnEUvSZWz6CWpcha9JFWuddFHxJqIeDIiHikRSJJUVokZ/ReA/QXuR5I0AK2KPiLWA58G7igTR5JUWtsZ/TeALwHvLrZDRGyNiOmImJ6ZmWl5OA3CQt8Vu+Xu3cMPImkg+i76iPgMcCQz9yy1X2buyMypzJyamJjo93CSpD61mdFfDnw2Il4BHgCujIh7i6SSJBXTd9Fn5k2ZuT4zJ4Hrge9l5g3FkkmSivA8ekmq3NoSd5KZjwGPlbgvSVJZzuglqXIWvSRVzqKXpMpZ9JJUOYtekipn0UtS5Sx6HW/ndaNOIKkgi16SKmfRr2I3vvGVUUeQNAQWvSRVzqKXpMoV+awbadxs27XtuG23XnXrCJJIg2fRa9VYqNyX+73lrxq4dCNJlXNGLy1h7izf2b3GlTN6SaqcM3pVaRAz8dn7dGavceOMXpIq54xe1VvubJsS9+0sX13mjF6SKueMXjpBg3yGIA2CM3pJqpwz+jHgudyS2nBGL0mVc0YvFbbQmTg+K9MoWfRSAb5Aqy5z6UaSKmfRS1LlXLqRBmSx5Rw/917DZtFLHeKLthoEi74DfCFP0iD1XfQRcQHwT8AvAO8COzLzllLBpNXEB3sNUpsZ/TvAX2TmExFxJrAnIh7NzOcKZZNOmIUpHa/vs24y83BmPtFcfhPYD5xfKpgkqYwia/QRMQlcAjy+wO+2AlsBNmzYUOJwGrItd+9+7/Kdn/+1ESaR1I/W59FHxBnAN4EvZubP5v8+M3dk5lRmTk1MTLQ9nCTpBLUq+og4iV7J35eZD5WJJAl6rzf4moNKaHPWTQB3Avsz8+vlIkmaa7Gy9zx7rVSbGf3lwB8CV0bE3ubftYVySZIK6XtGn5n/DkTBLFJfXN6QluaHmkljyjV8rZQfgbAa7bxu1AlUkJ+Po+U4o5cq4ixfC3FGL1XIWb7mckYvVc5ZvpzRS6uEs/zVyxm9JFXOopdWOZd26ufSjbQKWeyri0UvCXANv2YWvcaSM9LBmh1fC78OFr2kFVnowdUHgvFg0Uvqm8s948Gi11hxyWa4TmS8nfF3l0XfEU8dPArAr16wbsnfz5r/Pa6z1+d+p+vcfebuC7B33v3Nem/7uQvffrH7XOj4w/LUwaOLjpski17SAK30GYEz/8Gy6FebMfyIYpdrpHYseh3n5nU/gWN/DMDJp9y+5L4vcAvbdq0DNr+3rdSpeRa8VIZFP2beL7/NS+5XygvcckL79Uqf5vKJvzhnua9Oy52943n97Vj0IzTKUrt53U9GduxZnpqnhay01C3/lbPoNVSLPbg5k9d8C/1NLPd34imeC7PoV5EXuIVt77w66hiShsyil1S1hZYIV9uyoUUvaay1ffdum5MGxuVBwqKv3OzZMJPHnmcS4NSTRhlHGgu1rfVb9GPqg6c93juyHJI+qIvLQhZ9Rd5/89Ls9aMjyyKtBv2U+igeCCz6Cmzbtc1Slwasn1M7l1vLH9YSkUU/ZJ4vLq0+bV8wbutDxe9RnTN57PlRR5A0QhZ9xSaPPd+65H2QkMZfq6KPiGsi4kBEvBQR20uFkiSV0/cafUSsAW4DrgYOAbsj4uHMfK5UuHE3kvX41/YM/5iSOq3Ni7GXAS9l5ssAEfEAsAlY1UU/qnKfPPZ27/IA3hA1u3zzyim/XPy+JQ1em6I/Hzg45/oh4Nfn7xQRW4GtABs2bGhxuPHQlTdISKrHbdzW6vZt1uhjgW153IbMHZk5lZlTExMTLQ4nSepHm6I/BFww5/p64PV2cSRJpbUp+t3ARRGxMSJOBq4HHi4TS5JUSt9r9Jn5TkRsA/4VWAPclZnPFksmSSqi1UcgZOZ3gO8UyiJJGgDfGStJlbPoJalyFr0kVc6il6TKWfSSVLnIPO7NrIM7WMSbwIGhHbB/5wA/HnWIFTBnOeOQEcxZ2rjkvDgzz+z3xsP+hqkDmTk15GOesIiYNmc545BzHDKCOUsbp5xtbu/SjSRVzqKXpMoNu+h3DPl4/TJnWeOQcxwygjlLWxU5h/pirCRp+Fy6kaTKWfSSVLmhFH1EXBMRByLipYjYPoxjrlREvBIRz0TE3tlTmCLi7Ih4NCJebH6eNYJcd0XEkYjYN2fborki4qZmfA9ExO+OOOfXIuK1Zkz3RsS1Hch5QUT8W0Tsj4hnI+ILzfbOjOkSGTs1nhHx4Yj4QUQ81eT862Z7Z8ZymZydGs85x14TEU9GxCPN9XLjmZkD/Ufvs+p/CFwInAw8BXx00Mc9gXyvAOfM2/Z3wPbm8nbgb0eQ6wrgUmDfcrmAjzbjegqwsRnvNSPM+TXgLxfYd5Q5zwMubS6fCbzQ5OnMmC6RsVPjSe9rRM9oLp8EPA58oktjuUzOTo3nnOP/ObATeKS5Xmw8hzGjvwx4KTNfzsy3gAeATUM4bhubgHuay/cAnxt2gMz8PvDTeZsXy7UJeCAzj2Xmj4CX6I37qHIuZpQ5D2fmE83lN4H99L7gvjNjukTGxYxkPLPnf5qrJzX/kg6N5TI5FzOyv8+IWA98GrhjXp4i4zmMoj8fODjn+iGW/uMdtgS+GxF7ImJrs+3czDwMvf98wEdGlu6DFsvVxTHeFhFPN0s7s085O5EzIiaBS+jN8Do5pvMyQsfGs1lm2AscAR7NzE6O5SI5oWPjCXwD+BLw7pxtxcZzGEUfC2zr0jmdl2fmpcCngD+JiCtGHagPXRvj24FfAj4OHAZubraPPGdEnAF8E/hiZv5sqV0X2DaUrAtk7Nx4Zub/ZebHgfXAZRHxsSV271rOTo1nRHwGOJKZe1Z6kwW2LZlzGEV/CLhgzvX1wOtDOO6KZObrzc8jwLfoPQV6IyLOA2h+Hhldwg9YLFenxjgz32j+g70L/APvP60cac6IOIlegd6XmQ81mzs1pgtl7Op4NtmOAo8B19CxsZxrbs4OjuflwGcj4hV6S9tXRsS9FBzPYRT9buCiiNgYEScD1wMPD+G4y4qI0yPizNnLwO8A++jl29zsthn49mgSHmexXA8D10fEKRGxEbgI+MEI8gHv/VHO+j16YwojzBkRAdwJ7M/Mr8/5VWfGdLGMXRvPiJiIiHXN5VOBTwLP06GxXCpn18YzM2/KzPWZOUmvH7+XmTdQcjyH9GrytfTOIPgh8OVhHHOFuS6k9+r1U8Czs9mAnwd2AS82P88eQbb76T2tfJveI/iWpXIBX27G9wDwqRHn/GfgGeDp5o/yvA7k/C16T2+fBvY2/67t0pgukbFT4wn8CvBkk2cf8FfN9s6M5TI5OzWe8zL/Nu+fdVNsPP0IBEmqnO+MlaTKWfSSVDmLXpIqZ9FLUuUsekmqnEUvSZWz6CWpcv8PlulhbZJQMh4AAAAASUVORK5CYII=\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(datacut['FourLepSystemM'],weights=datacut['Weight'],bins=50,alpha=0.7)\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bck['FourLepSystemM'],weights=bck['Weight'],bins=1000,alpha=0.7)\n",
+    "plt.xlim([0,400])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "261470dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemM'],weights=bckmc['Weight'],bins=50,facecolor='r',alpha=0.8,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=50,facecolor='b',alpha=0.6,label='Signal')\n",
+    "#plt.hist(signaldata['FourLepSystemM'],density=1,bins=100,facecolor='g',alpha=0.7,label='Data')\n",
+    "#plt.hist(datanocut['FourLepSystemM'],bins=50,facecolor='cyan',alpha=0.5,label='Data without cuts')\n",
+    "#plt.text(120,0.055,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "#plt.text(165,0.055, 'Preliminary Open Data', fontsize=10)\n",
+    "#plt.text(150,0.050,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "#plt.text(150,0.045,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "#plt.xlim([100,400])\n",
+    "#plt.ylim([0,0.06])\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Mass [GeV]')\n",
+    "#handles,labels = ax.get_legend_handles_labels()\n",
+    "#handles = [handles[2], handles[1], handles[0]]\n",
+    "#labels = [labels[2], labels[1], labels[0]]\n",
+    "#ax.legend(handles,labels)\n",
+    "#plt.savefig(\"images/fourmass.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12169400",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystempt'],bins=30,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(45,0.026,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(77,0.026, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(45,0.024,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(45,0.022,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Transverse Momentum [GeV]')\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.xlim([0,230])\n",
+    "plt.savefig(\"images/fourpt.png\")\n",
+    "plt.show()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "de2ae95a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ1'],bins=60,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ1'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ1'],bins=30,density=1,facecolor='g',alpha=0.6,label='Data')\n",
+    "plt.text(6,0.05,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(8,0.0475, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(6,0.0425,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(6,0.038,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z1 [GeV]')\n",
+    "plt.xlim([0,200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b9eeb6df",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ2'],bins=200,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ2'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(50,0.039,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(88,0.039, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(50,0.035,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(50,0.032,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z2 [GeV]')\n",
+    "plt.xlim([0,270])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz2.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "26c0f644",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signalcut['FourLepRapidity'],bins=50,density=1,facecolor='g',alpha=0.5,label='Signal')\n",
+    "plt.hist(bckmc['FourLepRapidity'],bins=50,density=1,facecolor='b',alpha=0.3,label='Background')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "#plt.savefig(\"figure1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12d83144",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemE'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemE'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystemE'],bins=20,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(250,0.0062,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(420,0.0062, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(250,0.0055,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(250,0.0050,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Energy [GeV]')\n",
+    "plt.xlim([0,1200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/foure.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "763d3e9b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystemM'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystemM'],bins=50,density=1,facecolor='b',alpha=0.5,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System M [GeV]')\n",
+    "plt.savefig(\"figure3.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c612bd67",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.3,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "plt.savefig(\"figure4.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c643f4f7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "h125=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "\n",
+    "plt.hist(h125['InvMassZ2'],bins=50)\n",
+    "#plt.hist(bckmc['InvMassZ2'],bins=200)\n",
+    "plt.xlim([0,100])\n",
+    "plt.show()\n",
+    "                  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "318c7451",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.7')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "96bd6352",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.4')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

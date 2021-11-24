@@ -10,7 +10,7 @@ Method         : Cuts::Cuts
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.24/06       [399366]
 Creator        : jvillami
-Date           : Tue Nov 23 02:24:18 2021
+Date           : Wed Nov 24 07:58:49 2021
 Host           : Linux centos7-docker 4.18.0-305.12.1.el8_4.x86_64 #1 SMP Wed Aug 11 01:59:55 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /eos/home-j/jvillami/SWAN_projects/HiggsZZ/HiggsZZ-BDT
 Training events: 2000
@@ -53,12 +53,12 @@ VarProp[0]: "FSmart" [Categorisation of cuts]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 6
-FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [61.6539802551,1469.16125488]
-FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.635770976543,604.6640625]
-InvMassZ1                     InvMassZ1                     InvMassZ1                     InvMassZ1                     units                             'F'    [0,265.89944458]
-InvMassZ2                     InvMassZ2                     InvMassZ2                     InvMassZ2                     units                             'F'    [0,577.892944336]
-FourLepRapidity               FourLepRapidity               FourLepRapidity               FourLepRapidity               units                             'F'    [-2.32292580605,2.21329307556]
-FourLepSystemE                FourLepSystemE                FourLepSystemE                FourLepSystemE                units                             'F'    [85.2539672852,1805.45080566]
+FourLepSystemM                FourLepSystemM                FourLepSystemM                FourLepSystemM                units                             'F'    [52.9711761475,1718.34313965]
+FourLepSystempt               FourLepSystempt               FourLepSystempt               FourLepSystempt               units                             'F'    [0.445196151733,643.795532227]
+InvMassZ1                     InvMassZ1                     InvMassZ1                     InvMassZ1                     units                             'F'    [0,258.399902344]
+InvMassZ2                     InvMassZ2                     InvMassZ2                     InvMassZ2                     units                             'F'    [0,1266.58117676]
+FourLepRapidity               FourLepRapidity               FourLepRapidity               FourLepRapidity               units                             'F'    [-2.20789837837,2.2981069088]
+FourLepSystemE                FourLepSystemE                FourLepSystemE                FourLepSystemE                units                             'F'    [82.0406494141,3390.6105957]
 NSpec 0
 
 

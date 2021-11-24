@@ -1,0 +1,478 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "18308091",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "import root_pandas as rp\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "e85f2f17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "bck=rp.read_root('RootFiles/DataTest.root','Background')\n",
+    "data=rp.read_root('RootFiles/DataSamples.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "92716ec7",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0940ce04",
+   "metadata": {},
+   "source": [
+    "Lets look at the real data "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "3045bcf4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Import real data\n",
+    "data=rp.read_root('RootFiles/DataSamples.root')\n",
+    "data['BDTval']=rp.read_root('RootFiles/TMVAppValuesData.root')\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2bd0d3da",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(data['FourLepSystemM'][0])\n",
+    "for ele in data['FourLepSystemM']:\n",
+    "    print(ele)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "e9dccc5b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signaldata=data[data['BDTval']>-0.5]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1a7d73a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signaldata=data[data['BDTval']>-0.5]\n",
+    "print(signaldata)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8639f865",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['FourLepSystemM'],weights=signalcut['Weight'],density=1,bins=50)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "763030eb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystempt'],bins=50)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ce9f08d9",
+   "metadata": {},
+   "source": [
+    "Now, we split simulated data to see the behavior of signal and background"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dd9035d7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sigmc=rp.read_root('RootFiles/DataTest.root', 'Signal')\n",
+    "sigmc['BDTval']=rp.read_root('RootFiles/TMVAppValues.root')\n",
+    "bckmc=rp.read_root('RootFiles/DataTest.root', 'Background')\n",
+    "bckmc['BDTval']=rp.read_root('RootFiles/TMVAppValues.root')\n",
+    "datanocut=rp.read_root('RootFiles/DataSamplesNoCuts.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a3b9b471",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signalmc=sigmc['BDTval']         \n",
+    "bckgmc=bckmc['BDTval']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9d0d1b5a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sgsize=signalmc.size\n",
+    "bckgsize=bckgmc.size"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03fc1677",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "space=30\n",
+    "cuts=np.linspace(-0.8,0.6,space)\n",
+    "efficiency=np.zeros(space)\n",
+    "significance=np.zeros(space)\n",
+    "bckgrej=np.zeros(space)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bd65d4c5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for i in range(space):\n",
+    "    cut=cuts[i]\n",
+    "    efficiency[i]=signalmc[signalmc>cut].size/sgsize\n",
+    "    significance[i]=signalmc[signalmc>cut].size/(bckgmc[bckgmc>cut].size)\n",
+    "    bckgrej[i]=1-bckgmc[bckgmc>cut].size/bckgmc.size\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4ebb5916",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(8,6), dpi=80)\n",
+    "plt.plot(cuts,efficiency,label='Signal Efficiency',color='blue')\n",
+    "plt.plot(cuts,significance,label='Signal Significance',color='red')\n",
+    "plt.plot(cuts,bckgrej,label='Background Rejection',color='green')\n",
+    "plt.xlabel(r'Cut value applied on BDT')\n",
+    "plt.ylabel(r'Efficiency')\n",
+    "plt.legend()\n",
+    "plt.savefig(\"images/efficiency\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b4c9002b",
+   "metadata": {},
+   "source": [
+    "Lets check the variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ff0faeb9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signalcut=sigmc[sigmc['BDTval']>-0.4]\n",
+    "print(sigmc[sigmc['BDTval']>-0.6])\n",
+    "print(bckmc['Weight'])\n",
+    "len(sigmc[sigmc['BDTval']>-0.6])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2f318eff",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=50)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "261470dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemM'],weights=bckmc['Weight'],bins=50,facecolor='r',alpha=0.8,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=50,facecolor='b',alpha=0.6,label='Signal')\n",
+    "#plt.hist(signaldata['FourLepSystemM'],density=1,bins=100,facecolor='g',alpha=0.7,label='Data')\n",
+    "#plt.hist(datanocut['FourLepSystemM'],bins=50,facecolor='cyan',alpha=0.5,label='Data without cuts')\n",
+    "#plt.text(120,0.055,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "#plt.text(165,0.055, 'Preliminary Open Data', fontsize=10)\n",
+    "#plt.text(150,0.050,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "#plt.text(150,0.045,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "#plt.xlim([100,400])\n",
+    "#plt.ylim([0,0.06])\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Mass [GeV]')\n",
+    "#handles,labels = ax.get_legend_handles_labels()\n",
+    "#handles = [handles[2], handles[1], handles[0]]\n",
+    "#labels = [labels[2], labels[1], labels[0]]\n",
+    "#ax.legend(handles,labels)\n",
+    "#plt.savefig(\"images/fourmass.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12169400",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystempt'],bins=30,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(45,0.026,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(77,0.026, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(45,0.024,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(45,0.022,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Transverse Momentum [GeV]')\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.xlim([0,230])\n",
+    "plt.savefig(\"images/fourpt.png\")\n",
+    "plt.show()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "de2ae95a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ1'],bins=60,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ1'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ1'],bins=30,density=1,facecolor='g',alpha=0.6,label='Data')\n",
+    "plt.text(6,0.05,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(8,0.0475, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(6,0.0425,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(6,0.038,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z1 [GeV]')\n",
+    "plt.xlim([0,200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b9eeb6df",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ2'],bins=200,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ2'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(50,0.039,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(88,0.039, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(50,0.035,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(50,0.032,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z2 [GeV]')\n",
+    "plt.xlim([0,270])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz2.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "26c0f644",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signalcut['FourLepRapidity'],bins=50,density=1,facecolor='g',alpha=0.5,label='Signal')\n",
+    "plt.hist(bckmc['FourLepRapidity'],bins=50,density=1,facecolor='b',alpha=0.3,label='Background')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "#plt.savefig(\"figure1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12d83144",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemE'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemE'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystemE'],bins=20,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(250,0.0062,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(420,0.0062, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(250,0.0055,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(250,0.0050,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Energy [GeV]')\n",
+    "plt.xlim([0,1200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/foure.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "763d3e9b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystemM'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystemM'],bins=50,density=1,facecolor='b',alpha=0.5,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System M [GeV]')\n",
+    "plt.savefig(\"figure3.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c612bd67",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.3,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "plt.savefig(\"figure4.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c643f4f7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "h125=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "\n",
+    "plt.hist(h125['InvMassZ2'],bins=50)\n",
+    "#plt.hist(bckmc['InvMassZ2'],bins=200)\n",
+    "plt.xlim([0,100])\n",
+    "plt.show()\n",
+    "                  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "318c7451",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.7')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "96bd6352",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.4')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

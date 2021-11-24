@@ -1,0 +1,376 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "18308091",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "import root_pandas as rp\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "e85f2f17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "bck=rp.read_root('RootFiles/DataTest.root','Background')\n",
+    "data=rp.read_root('RootFiles/DataSamples.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "c66c3805",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig['BDTval']=rp.read_root('RootFiles/TMVAppValues.root')\n",
+    "data['BDTval']=rp.read_root('RootFiles/TMVAppValuesData.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "ff0faeb9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signalcut=sig[sig['BDTval']>-0.4]\n",
+    "datacut=data[data['BDTval']>-0.3]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "90bbc3e4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(data['FourLepSystemM'],bins=300,alpha=0.7)\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bck['FourLepSystemM'],weights=bck['Weight'],bins=1000,alpha=0.7)\n",
+    "plt.xlim([0,400])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "38ca65fc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(datacut['FourLepSystemM'],weights=datacut['Weight'],bins=50,alpha=0.7)\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bck['FourLepSystemM'],weights=bck['Weight'],bins=1000,alpha=0.7)\n",
+    "plt.xlim([0,400])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "e09f95c7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(datacut['FourLepSystempt'],weights=datacut['Weight'],bins=50,alpha=0.7)\n",
+    "plt.hist(signalcut['FourLepSystempt'],weights=signalcut['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bck['FourLepSystempt'],weights=bck['Weight'],bins=1000,alpha=0.7)\n",
+    "plt.xlim([0,400])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "261470dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemM'],weights=bckmc['Weight'],bins=50,facecolor='r',alpha=0.8,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=50,facecolor='b',alpha=0.6,label='Signal')\n",
+    "#plt.hist(signaldata['FourLepSystemM'],density=1,bins=100,facecolor='g',alpha=0.7,label='Data')\n",
+    "#plt.hist(datanocut['FourLepSystemM'],bins=50,facecolor='cyan',alpha=0.5,label='Data without cuts')\n",
+    "#plt.text(120,0.055,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "#plt.text(165,0.055, 'Preliminary Open Data', fontsize=10)\n",
+    "#plt.text(150,0.050,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "#plt.text(150,0.045,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "#plt.xlim([100,400])\n",
+    "#plt.ylim([0,0.06])\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Mass [GeV]')\n",
+    "#handles,labels = ax.get_legend_handles_labels()\n",
+    "#handles = [handles[2], handles[1], handles[0]]\n",
+    "#labels = [labels[2], labels[1], labels[0]]\n",
+    "#ax.legend(handles,labels)\n",
+    "#plt.savefig(\"images/fourmass.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12169400",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystempt'],bins=30,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(45,0.026,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(77,0.026, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(45,0.024,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(45,0.022,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Transverse Momentum [GeV]')\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.xlim([0,230])\n",
+    "plt.savefig(\"images/fourpt.png\")\n",
+    "plt.show()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "de2ae95a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ1'],bins=60,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ1'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ1'],bins=30,density=1,facecolor='g',alpha=0.6,label='Data')\n",
+    "plt.text(6,0.05,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(8,0.0475, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(6,0.0425,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(6,0.038,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z1 [GeV]')\n",
+    "plt.xlim([0,200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b9eeb6df",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ2'],bins=200,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ2'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(50,0.039,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(88,0.039, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(50,0.035,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(50,0.032,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z2 [GeV]')\n",
+    "plt.xlim([0,270])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz2.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "26c0f644",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signalcut['FourLepRapidity'],bins=50,density=1,facecolor='g',alpha=0.5,label='Signal')\n",
+    "plt.hist(bckmc['FourLepRapidity'],bins=50,density=1,facecolor='b',alpha=0.3,label='Background')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "#plt.savefig(\"figure1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12d83144",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemE'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemE'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystemE'],bins=20,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(250,0.0062,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(420,0.0062, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(250,0.0055,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(250,0.0050,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Energy [GeV]')\n",
+    "plt.xlim([0,1200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/foure.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "763d3e9b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystemM'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystemM'],bins=50,density=1,facecolor='b',alpha=0.5,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System M [GeV]')\n",
+    "plt.savefig(\"figure3.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c612bd67",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.3,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "plt.savefig(\"figure4.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c643f4f7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "h125=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "\n",
+    "plt.hist(h125['InvMassZ2'],bins=50)\n",
+    "#plt.hist(bckmc['InvMassZ2'],bins=200)\n",
+    "plt.xlim([0,100])\n",
+    "plt.show()\n",
+    "                  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "318c7451",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.7')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "96bd6352",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.4')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

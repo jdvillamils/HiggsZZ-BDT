@@ -1,0 +1,33 @@
+import ROOT as root
+import atlasplots as aplt
+
+''' 
+Plot Function
+''' 
+
+def plots (name_hist, type_hist_sg, type_hist_bg, xlabel_hist):
+
+    # Set the ATLAS Style
+    aplt.set_atlas_style()
+    
+    fig, ax1 = aplt.subplots (name = name_hist,figsize=(800,700))
+    ''' Change if necessary '''
+    ax1.plot(type_hist_sg, linecolor=root.kBlue+1, label="Signal")
+    ax1.plot(type_hist_bg, linecolor=root.kRed+1, label="Background")
+
+    # Add extra space at top of plot to make room for labels
+    ax1.add_margins(top=0.26)
+    
+    # Set axis titles
+    ax1.set_xlabel(xlabel_hist)
+    ax1.set_ylabel("Events")
+    
+    # Add the ATLAS label
+    aplt.atlas_label(text="work in progress", loc= "upper left")
+    ax1.text(0.2, 0.86, "#sqrt{s} = 13 TeV", size=22, align=13)
+
+    # Add legend
+    ax1.legend(loc=(0.65, 0.8, 0.95, 0.92))
+
+    # Save the plot as a PDF
+    fig.savefig("path")

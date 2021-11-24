@@ -1,0 +1,112 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "935ffcab",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Welcome to JupyROOT 6.24/06\n"
+     ]
+    }
+   ],
+   "source": [
+    "import root_pandas as rp\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "40c1c066",
+   "metadata": {},
+   "source": [
+    "The comparison between background from ZZ and background from other processes, shows how insignificant are these last ones. Representing less than 1% of the total background."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "1d79b9df",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "data=rp.read_root('RootFiles/DataSamples.root')\n",
+    "data['BDTval']=rp.read_root('RootFiles/TMVAppValuesData.root')\n",
+    "datacut=data[data['BDTval']>-0.4]\n",
+    "sig=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "bc=rp.read_root('RootFiles/DataTest.root', 'Background')\n",
+    "plt.hist(datacut['FourLepSystemM'],bins=50,alpha=0.7)\n",
+    "plt.hist(sig['FourLepSystemM'],weights=sig['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bc['FourLepSystemM'],weights=bc['Weight'],bins=50,alpha=0.7)\n",
+    "plt.xlim([0,])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "13f4ac77",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(datacut['FourLepSystempt'],bins=50,alpha=0.7)\n",
+    "plt.hist(sig['FourLepSystempt'],weights=sig['Weight'],bins=100,alpha=0.7)\n",
+    "#plt.hist(bc['FourLepSystempt'],weights=bc['Weight'],bins=50,alpha=0.7)\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

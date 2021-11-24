@@ -1,0 +1,336 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "18308091",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "import root_pandas as rp\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "e85f2f17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "bck=rp.read_root('RootFiles/DataTest.root','Background')\n",
+    "data=rp.read_root('RootFiles/DataSamples.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "7ebbad15",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sig['BDTval']=rp.read_root('RootFiles/TMVAppValues.root')\n",
+    "data['BDTval']=rp.read_root('RootFiles/TMVAppValuesData.root')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "ff0faeb9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "signalcut=sig[sig['BDTval']>-0.4]\n",
+    "datacut=data[data['BDTval']>-0.4]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "2f318eff",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ValueError",
+     "evalue": "weights should have the same shape as x",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m/tmp/ipykernel_7036/530666628.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mhist\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mdatacut\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'FourLepSystemM'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mbins\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m50\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0malpha\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0.7\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mhist\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msignalcut\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'FourLepSystemM'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mweights\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0msig\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'Weight'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mbins\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m100\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0malpha\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0.7\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      3\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mhist\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mbck\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'FourLepSystemM'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mweights\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mbc\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'Weight'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mbins\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m1000\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0malpha\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m0.7\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mxlim\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;36m400\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0mplt\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshow\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m/cvmfs/sft.cern.ch/lcg/views/LCG_101swan/x86_64-centos7-gcc10-opt/lib/python3.9/site-packages/matplotlib/pyplot.py\u001b[0m in \u001b[0;36mhist\u001b[0;34m(x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, data, **kwargs)\u001b[0m\n\u001b[1;32m   2851\u001b[0m         \u001b[0morientation\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m'vertical'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrwidth\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlog\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcolor\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2852\u001b[0m         label=None, stacked=False, *, data=None, **kwargs):\n\u001b[0;32m-> 2853\u001b[0;31m     return gca().hist(\n\u001b[0m\u001b[1;32m   2854\u001b[0m         \u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbins\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mbins\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrange\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mrange\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mdensity\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mdensity\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mweights\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mweights\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2855\u001b[0m         \u001b[0mcumulative\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mcumulative\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbottom\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mbottom\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhisttype\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mhisttype\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m/cvmfs/sft.cern.ch/lcg/views/LCG_101swan/x86_64-centos7-gcc10-opt/lib/python3.9/site-packages/matplotlib/__init__.py\u001b[0m in \u001b[0;36minner\u001b[0;34m(ax, data, *args, **kwargs)\u001b[0m\n\u001b[1;32m   1359\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0minner\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0max\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mdata\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1360\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mdata\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1361\u001b[0;31m             \u001b[0;32mreturn\u001b[0m \u001b[0mfunc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0max\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0mmap\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msanitize_sequence\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1362\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1363\u001b[0m         \u001b[0mbound\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnew_sig\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mbind\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0max\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m/cvmfs/sft.cern.ch/lcg/views/LCG_101swan/x86_64-centos7-gcc10-opt/lib/python3.9/site-packages/matplotlib/axes/_axes.py\u001b[0m in \u001b[0;36mhist\u001b[0;34m(self, x, bins, range, density, weights, cumulative, bottom, histtype, align, orientation, rwidth, log, color, label, stacked, **kwargs)\u001b[0m\n\u001b[1;32m   6704\u001b[0m             \u001b[0mlen_xi\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mxi\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   6705\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mwi\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mwi\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0mlen_xi\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 6706\u001b[0;31m                 \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'weights should have the same shape as x'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   6707\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mlen_xi\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   6708\u001b[0m                 \u001b[0minput_empty\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mFalse\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mValueError\u001b[0m: weights should have the same shape as x"
+     ]
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.hist(datacut['FourLepSystemM'],bins=50,alpha=0.7)\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=sig['Weight'],bins=100,alpha=0.7)\n",
+    "plt.hist(bck['FourLepSystemM'],weights=bc['Weight'],bins=1000,alpha=0.7)\n",
+    "plt.xlim([0,400])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "261470dd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemM'],weights=bckmc['Weight'],bins=50,facecolor='r',alpha=0.8,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemM'],weights=signalcut['Weight'],bins=50,facecolor='b',alpha=0.6,label='Signal')\n",
+    "#plt.hist(signaldata['FourLepSystemM'],density=1,bins=100,facecolor='g',alpha=0.7,label='Data')\n",
+    "#plt.hist(datanocut['FourLepSystemM'],bins=50,facecolor='cyan',alpha=0.5,label='Data without cuts')\n",
+    "#plt.text(120,0.055,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "#plt.text(165,0.055, 'Preliminary Open Data', fontsize=10)\n",
+    "#plt.text(150,0.050,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "#plt.text(150,0.045,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "#plt.xlim([100,400])\n",
+    "#plt.ylim([0,0.06])\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Mass [GeV]')\n",
+    "#handles,labels = ax.get_legend_handles_labels()\n",
+    "#handles = [handles[2], handles[1], handles[0]]\n",
+    "#labels = [labels[2], labels[1], labels[0]]\n",
+    "#ax.legend(handles,labels)\n",
+    "#plt.savefig(\"images/fourmass.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12169400",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystempt'],bins=30,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(45,0.026,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(77,0.026, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(45,0.024,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(45,0.022,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Transverse Momentum [GeV]')\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.xlim([0,230])\n",
+    "plt.savefig(\"images/fourpt.png\")\n",
+    "plt.show()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "de2ae95a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ1'],bins=60,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ1'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ1'],bins=30,density=1,facecolor='g',alpha=0.6,label='Data')\n",
+    "plt.text(6,0.05,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(8,0.0475, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(6,0.0425,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(6,0.038,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z1 [GeV]')\n",
+    "plt.xlim([0,200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b9eeb6df",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['InvMassZ2'],bins=200,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['InvMassZ2'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(50,0.039,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(88,0.039, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(50,0.035,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(50,0.032,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Invariant Mass Z2 [GeV]')\n",
+    "plt.xlim([0,270])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/invz2.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "26c0f644",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signalcut['FourLepRapidity'],bins=50,density=1,facecolor='g',alpha=0.5,label='Signal')\n",
+    "plt.hist(bckmc['FourLepRapidity'],bins=50,density=1,facecolor='b',alpha=0.3,label='Background')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "#plt.savefig(\"figure1.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12d83144",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig,ax = plt.subplots(1)\n",
+    "plt.hist(bckmc['FourLepSystemE'],bins=50,density=1,facecolor='r',alpha=0.6,label='Background')\n",
+    "plt.hist(signalcut['FourLepSystemE'],bins=50,density=1,facecolor='b',alpha=0.6,label='Signal')\n",
+    "plt.hist(signaldata['FourLepSystemE'],bins=20,density=1,facecolor='g',alpha=0.7,label='Data')\n",
+    "plt.text(250,0.0062,'ATLAS', weight='bold',style='italic',fontsize=13 ) \n",
+    "plt.text(420,0.0062, 'Preliminary Open Data', fontsize=10)\n",
+    "plt.text(250,0.0055,'$\\sqrt{s}$=13 TeV, 10 fb$^{-1}$',fontsize=9 ) \n",
+    "plt.text(250,0.0050,'H$\\longrightarrow$ZZ*$\\longrightarrow$4l',fontsize=9 ) \n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System Energy [GeV]')\n",
+    "plt.xlim([0,1200])\n",
+    "handles,labels = ax.get_legend_handles_labels()\n",
+    "handles = [handles[2], handles[1], handles[0]]\n",
+    "labels = [labels[2], labels[1], labels[0]]\n",
+    "ax.legend(handles,labels)\n",
+    "plt.savefig(\"images/foure.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "763d3e9b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystemM'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystemM'],bins=50,density=1,facecolor='b',alpha=0.5,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System M [GeV]')\n",
+    "plt.savefig(\"figure3.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c612bd67",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signal['FourLepSystempt'],bins=50,density=1,facecolor='r',alpha=0.4,label='Signal from BDT')\n",
+    "plt.hist(signall['FourLepSystempt'],bins=50,density=1,facecolor='b',alpha=0.3,label='Real Signal')\n",
+    "plt.legend(loc='upper right')\n",
+    "plt.xlabel(r'Four Lepton System pt [GeV]')\n",
+    "plt.savefig(\"figure4.png\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c643f4f7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "h125=rp.read_root('RootFiles/DataTest.root','Signal')\n",
+    "\n",
+    "plt.hist(h125['InvMassZ2'],bins=50)\n",
+    "#plt.hist(bckmc['InvMassZ2'],bins=200)\n",
+    "plt.xlim([0,100])\n",
+    "plt.show()\n",
+    "                  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "318c7451",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.7')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "96bd6352",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.hist(signaldata['InvMassZ2'],bins=100,density=1,facecolor='r',alpha=0.7,label='Data with bdt cut -0.4')\n",
+    "plt.hist(datanocut['InvMassZ2'],bins=100,density=1,facecolor='cyan',alpha=0.8,label='Data without cuts')\n",
+    "plt.xlim([0,220])\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

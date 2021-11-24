@@ -242,8 +242,8 @@ int TMVAClassification( TString myMethodList = "" )
    // global event weights per tree (see below for setting event-wise weights)
   
     
-   Double_t signalWeight     = 22; //nn
-   Double_t backgroundWeight = 0.5;
+   Double_t signalWeight     = 1; //nn
+   Double_t backgroundWeight = 1;
 
     
     
