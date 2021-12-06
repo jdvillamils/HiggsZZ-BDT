@@ -2,10 +2,18 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 1,
    "id": "935ffcab",
    "metadata": {},
-   "outputs": [],
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Welcome to JupyROOT 6.24/06\n"
+     ]
+    }
+   ],
    "source": [
     "import root_pandas as rp\n",
     "import pandas as pd\n",
@@ -114,7 +122,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 32,
    "id": "9d8555d0",
    "metadata": {},
    "outputs": [],
@@ -132,7 +140,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 33,
    "id": "5898e41b",
    "metadata": {},
    "outputs": [],
@@ -152,7 +160,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 35,
    "id": "b2d76fc2",
    "metadata": {},
    "outputs": [
@@ -177,7 +185,7 @@
     "plt.xlabel(r'Cut value applied on BDT')\n",
     "plt.ylabel(r'Efficiency')\n",
     "plt.legend()\n",
-    "plt.savefig(\"images/efficiency\",dpi=1000)\n",
+    "plt.savefig(\"images/efficiency\")\n",
     "plt.show()"
    ]
   }
