@@ -25,3 +25,11 @@ To add to the previous data (simulated), the real data meassured by ATLAS:
 + 1) Run DataToRoot.C
 + 2) In TMVAClassificationApplication, comment lines 269, 313 and 427 and uncomment lines 270, 314 and 428. Then run the script.
 + 3) Add the TMVAppData.root into BDTAnalysis notebook
+
+
+P.S.
+All files are run from the terminal as
+```
+root -l File.C 
+```
+
