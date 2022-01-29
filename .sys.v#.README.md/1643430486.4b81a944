@@ -14,7 +14,7 @@ Once is done, TMVAClassification uses the train samples to train the BDT, and TM
 
 ## To run:
 
-Only necessary if changes are made to the analysis and filtering section, elsewhere, root files are ready to be read, including the results from the TMVA training.
+Only neccesary if changes are made to the analysis and filtering section, elsewhere, root files are ready to be read, including the results from the TMVA training.
 
 + 1) Run the SignalToRoot and BackgroundToRoot files, this will create the root files in the RootFiles folder.
 + 2) Run the mergeDataTest, mergeDataTrain and mergeTestData files, in order to prepare the root files for being processed by TMVA.
