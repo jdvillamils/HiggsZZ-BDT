@@ -266,8 +266,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    // we'll later on use only the "signal" events for the test in this example.
    //
    TFile *input(0);
-   //TString fname = "RootFiles/DataTestmerge.root";  //For MC Samples
-   TString fname = "RootFiles/DataSamples.root"; //For Real Data Samples
+   TString fname = "RootFiles/DataTestmerge.root";  //For MC Samples
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }
@@ -310,8 +309,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
 
     ///-------------------------------------------------------
      Double_t BDTval;
-     //TFile *val  = new TFile( "RootFiles/TMVAppValues.root","RECREATE" );  //For MC
-     TFile *val  = new TFile( "RootFiles/TMVAppValuesData.root","RECREATE" ); //For Data
+     TFile *val  = new TFile( "RootFiles/TMVAppValues.root","RECREATE" );  //For MC
      TTree *valtree  = new TTree( "Values","Data from TMVA" );
      valtree->Branch("BDTval",&BDTval,"BDTval/D");
     
@@ -424,8 +422,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    val->Close();
    // Write histograms
 
-   //TFile *target  = new TFile( "RootFiles/TMVApp.root","RECREATE" ); //For MC
-   TFile *target  = new TFile( "RootFiles/TMVAppData.root","RECREATE" ); //For Data
+   TFile *target  = new TFile( "RootFiles/TMVApp.root","RECREATE" ); //For MC
    if (Use["Likelihood"   ])   histLk     ->Write();
    if (Use["LikelihoodD"  ])   histLkD    ->Write();
    if (Use["LikelihoodPCA"])   histLkPCA  ->Write();

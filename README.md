@@ -12,29 +12,29 @@ The created root files are reorganised and separated with the mergeDataTest, mer
 
 Once is done, TMVAClassification uses the train samples to train the BDT, and TMVAClassificationApplication uses the datasets from the training, and the test samples, to discriminate the data with the criteria.
 
+## About files in this Framework
+
++ The SignalToRoot and BackgroundToRoot files take data from AOD and, filter and store it in root files in the RootFiles folder.
++ The mergeDataTest, mergeDataTrain and mergeTestData files, prepare the root files for being processed by TMVA.
++ TMVAClassification will create the datasets for the testing the samples with TMVACLassificationApplication (and  TMVAClassificationApplicationData for data) This returns the multivariate discriminant, for reject background and keep signal.
++ BDTAnalysis is the notebook for plotting and changing the parameters of TMVA from the resulting samples.
+
 ## To run:
 
-Only necessary if changes are made to the analysis and filtering section, elsewhere, root files are ready to be read, including the results from the TMVA training.
+(Only necessary if changes are made to the analysis and filtering section, elsewhere, root files are ready upload to be read, including the results from the TMVA training.)
 
-+ 1) Run the SignalToRoot and BackgroundToRoot files, this will create the root files in the RootFiles folder.
-+ 2) Run the mergeDataTest, mergeDataTrain and mergeTestData files, in order to prepare the root files for being processed by TMVA.
-+ 3) Run TMVAClassification, this will create the datasets for the testing.
-+ 4) Run TMVACLassificationApplication. This results in the finel multivariate discriminant, for reject background and keep signal.
-+ 5) The plots and information of the process can be seen in the BDTAnalysis notebook.
-
-To add to the previous data (simulated), the real data meassured by ATLAS:
-
-+ 1) Run DataToRoot.C
-+ 2) In TMVAClassificationApplication, comment lines 269, 313 and 427 and uncomment lines 270, 314 and 428. Then run the script.
-+ 3) Add the TMVAppData.root into BDTAnalysis notebook
++ 1) run the  Samples Processing
+```
+source run_processing_samples.sh 
+```
++ 2) Train the TMVA and then test it
+```
+source run_tmva.sh
+```
 
 ## To visualize the results
 
-Go to the BDTAnalysis notebook, change the bdt parameters and plot the different variables, with the already processed root files.
+Go to the BDTAnalysis notebook, change the bdt parameters and plot the different variables, with the already processed root files, or new loaded files.
 
-P.S.
-All files are run from the terminal as
-```
-root -l File.C 
-```
+
 

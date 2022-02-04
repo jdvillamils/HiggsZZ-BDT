@@ -1,9 +1,0 @@
-# HiggsZZ-BDT
-
-Framework for filtering and splitting available data from AOD, corresponding to Higgs->ZZ decay, in order to train a TMVA Boosted Decision Tree to discriminate from samples of simulated and real data, to find Higgs boson mass.
-
-Files SignalToRoot and BackgroundToRoot store the signal and background data from the AOD into root files.
-
-The created root files are reorganised and separated with the mergeDataTest, mergeDataTrain and mergeTestData, in order to have different samples for training the BDT, and to test it. 
-
-Once is done, TMVAClassification uses the train samples to train the BDT, and TMVAClassificationApplication uses the datasets from the training, and the test samples, to discriminate the data with the criteria.
