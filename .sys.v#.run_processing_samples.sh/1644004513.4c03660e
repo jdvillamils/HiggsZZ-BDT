@@ -1,7 +1,0 @@
-
-root -l SignalToRoot1.c
-.q
-
-root -l SignalToRoot2.C
-.q
-
